@@ -56,17 +56,17 @@ onMounted(() => {
 <template>
   <div class="vertical-menu">
     <div class="py-2 px-4 bg-[rgb(var(--header))]">
-      <nuxt-link to="/">
-        <div class="flex flex-auto gap-3 justify-center items-center h-[48px]">
-          <div
-            class="app-logo text-center h-20 flex justify-center items-center gap-3 px-4"
-          >
-            <nuxt-link to="/" class="flex items-center justify-center">
-              <img
-                src="@/assets/img/logo/lzs-logo.png"
-                class="logo h-10"
-                alt="logo"
-              />
+      <div class="flex flex-auto gap-3 justify-center items-center h-[48px]">
+        <div
+          class="app-logo text-center h-20 flex justify-center items-center gap-3 px-4"
+        >
+          <nuxt-link to="/" class="flex items-center justify-center">
+            <img
+              src="@/assets/img/logo/lzs-logo.png"
+              class="logo h-10"
+              alt="logo"
+            />
+            <ClientOnly>
               <div
                 v-if="
                   siteSettings.value?.showSiteNameInHeader &&
@@ -79,10 +79,10 @@ onMounted(() => {
               >
                 {{ siteNameToShow }}
               </div>
-            </nuxt-link>
-          </div>
+            </ClientOnly>
+          </nuxt-link>
         </div>
-      </nuxt-link>
+      </div>
     </div>
     <NuxtScrollbar
       class="flex flex-col justify-between my-6"

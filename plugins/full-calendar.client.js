@@ -18,10 +18,6 @@ FullCalendar.options = {
   ],
 };
 
-export default defineNuxtPlugin((/* nuxtApp */) => {
-  return {
-    provide: {
-      FullCalendar,
-    },
-  };
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.provide('FullCalendar', FullCalendar);
 });

@@ -1,27 +1,24 @@
 <script setup>
-import { useUserStore } from "~/stores/user";
-
 definePageMeta({
   title: "Logout",
   layout: "empty",
 });
 
-const userStore = useUserStore();
-const { auth } = useApi();
+const { logout } = useAuth();
 
-await auth.logout();
+// Perform logout with message display
+await logout(true);
 
+// Navigate to login after a brief delay to show the logout message
 if (process.client) {
-  userStore.setUsername("");
-  userStore.setRoles([]);
-  userStore.setIsAuthenticated(false);
-
-  navigateTo("/login");
+  setTimeout(() => {
+    navigateTo("/login");
+  }, 2000);
 }
 </script>
 
 <template>
   <div>
-    <h1>Logout</h1>
+    <!-- <h1>Logout</h1> -->
   </div>
 </template>

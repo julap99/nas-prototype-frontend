@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted } from "vue";
 import { useUserStore } from "~/stores/user";
 import { RecaptchaV2 } from "vue3-recaptcha-v2";
 
@@ -16,18 +17,12 @@ const userStore = useUserStore();
 const togglePasswordVisibility = ref(false);
 
 const login = async () => {
-  const { auth } = useApi();
+  const { login: authLogin } = useAuth();
 
   try {
-    const res = await auth.login(username.value, password.value);
-    const data = res.data;
+    const result = await authLogin(username.value, password.value);
 
-    if (data.statusCode === 200) {
-      // Save token to pinia store
-      userStore.setUsername(data.data.username);
-      userStore.setRoles(data.data.roles);
-      userStore.setIsAuthenticated(true);
-
+    if (result.success) {
       $swal.fire({
         position: "center",
         title: "Success",
@@ -41,12 +36,17 @@ const login = async () => {
     } else {
       $swal.fire({
         title: "Error!",
-        text: data.message,
+        text: result.message,
         icon: "error",
       });
     }
   } catch (e) {
     console.log(e);
+    $swal.fire({
+      title: "Error!",
+      text: "Login failed. Please try again.",
+      icon: "error",
+    });
   }
 };
 
@@ -62,6 +62,10 @@ const handleExpiredCallback = () => {
 const handleLoadCallback = (response) => {
   console.log("Load callback", response);
 };
+
+onMounted(() => {
+  console.log("masuk login page");
+});
 </script>
 
 <template>

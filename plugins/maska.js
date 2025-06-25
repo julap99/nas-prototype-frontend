@@ -1,5 +1,5 @@
-import Maska from "maska";
+import { maska } from "maska";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.use(Maska);
+  nuxtApp.vueApp.directive('maska', maska);
 });

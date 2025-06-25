@@ -1,13 +1,18 @@
+import { useUserStore } from "@/stores/user";
+
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const { $swal } = useNuxtApp();
+  console.log("Auth middleware - checking authentication");
 
   if (process.client) {
-    // Validate every request to every page
-    const { auth } = useApi();
-    const validateUser = await auth.validate();
+    // Get the user store
+    const userStore = useUserStore();
 
-    // If user is not logged in, redirect to logout page
-    if (validateUser.data.statusCode === 401) {
+    // Check if user is authenticated using Pinia getter
+    if (!userStore.isAuthenticated) {
+      console.log("User not authenticated, redirecting to login");
+
+      // Show session expired message
+      const { $swal } = useNuxtApp();
       $swal
         .fire({
           title: "Session Expired",
@@ -16,10 +21,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
           confirmButtonText: "OK",
         })
         .then(() => {
-          return window.location.replace("/logout");
+          return navigateTo("/login");
         });
+
+      return;
     }
 
+    console.log("User is authenticated:", userStore.username);
     return true;
   }
 });

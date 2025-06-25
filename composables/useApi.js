@@ -104,6 +104,39 @@ export const useApi = () => {
       return await apiCall('/api/auth/validate', {
         method: 'GET'
       });
+    },
+    
+    validateToken: async (token) => {
+      // For mock implementation, just check if token exists and is our mock token
+      if (USE_MOCK_DATA) {
+        await simulateDelay(100);
+        if (token === 'mock-jwt-token') {
+          return { 
+            data: { 
+              statusCode: 200, 
+              valid: true,
+              user: {
+                username: "admin",
+                roles: ["Admin"]
+              }
+            } 
+          };
+        } else {
+          return { 
+            data: { 
+              statusCode: 401, 
+              valid: false,
+              message: "Invalid token"
+            } 
+          };
+        }
+      } else {
+        // For real backend, validate token with server
+        return await apiCall('/api/auth/validate-token', {
+          method: 'POST',
+          body: JSON.stringify({ token })
+        });
+      }
     }
   };
 

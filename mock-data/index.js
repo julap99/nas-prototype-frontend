@@ -127,6 +127,7 @@ export const mockApiResponses = {
   "/api/auth/login": mockAuthResponse,
   "/api/auth/logout": { statusCode: 200, message: "Logout successful" },
   "/api/auth/validate": { statusCode: 200, data: { valid: true } },
+  "/api/auth/validate-token": { statusCode: 200, data: { valid: true, user: { username: 'admin', roles: ['Admin'] } } },
   "/api/devtool/config/loading-logo": mockLoadingConfig,
   "/api/devtool/config/site-settings": { statusCode: 200, data: mockSiteSettings },
   "/api/devtool/menu/user-list": { statusCode: 200, data: mockUsers },

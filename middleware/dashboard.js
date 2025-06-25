@@ -1,10 +1,15 @@
+import { useUserStore } from "@/stores/user";
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  // Validate every request to every page
-  const { auth } = useApi();
-  const validateUser = await auth.validate();
-
-  // If user is not logged in, redirect to logout page
-  if (validateUser.data.statusCode === 401) return true;
-
-  return navigateTo("/dashboard");
+  if (process.client) {
+    // Get the user store
+    const userStore = useUserStore();
+    
+    // If user is authenticated, redirect to dashboard
+    if (userStore.isAuthenticated) {
+      return navigateTo("/dashboard");
+    }
+    
+    // If not authenticated, allow access to login page
+    return true;
+  }
 });

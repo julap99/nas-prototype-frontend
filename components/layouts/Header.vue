@@ -99,27 +99,29 @@ const currentLogo = computed(() => {
           </button>
         </span>
         <!-- Site logo and name for vertical layout - only show if explicitly enabled -->
-        <div
-          v-if="siteSettings?.value?.showSiteNameInHeader"
-          class="flex items-center ml-4"
-        >
-          <img
-            :src="currentLogo"
-            :alt="siteSettings?.value?.siteName || 'Site Logo'"
-            class="h-8 block"
-            @error="$event.target.src = '/img/logo/corradAF-logo.svg'"
-          />
-          <span
-            v-if="siteSettings?.value?.siteName"
-            class="text-lg font-semibold"
-            :class="{ 'ml-3': siteSettings?.value?.siteLogo }"
-            :style="{
-              fontSize: (siteSettings?.value?.siteNameFontSize || 18) + 'px',
-            }"
+        <ClientOnly>
+          <div
+            v-if="siteSettings?.value?.showSiteNameInHeader"
+            class="flex items-center ml-4"
           >
-            {{ siteSettings?.value?.siteName }}
-          </span>
-        </div>
+            <img
+              :src="currentLogo"
+              :alt="siteSettings?.value?.siteName || 'Site Logo'"
+              class="h-8 block"
+              @error="$event.target.src = '/img/logo/corradAF-logo.svg'"
+            />
+            <span
+              v-if="siteSettings?.value?.siteName"
+              class="text-lg font-semibold"
+              :class="{ 'ml-3': siteSettings?.value?.siteLogo }"
+              :style="{
+                fontSize: (siteSettings?.value?.siteNameFontSize || 18) + 'px',
+              }"
+            >
+              {{ siteSettings?.value?.siteName }}
+            </span>
+          </div>
+        </ClientOnly>
       </div>
       <div class="flex" v-else>
         <nuxt-link to="/">
@@ -130,17 +132,19 @@ const currentLogo = computed(() => {
               class="h-8 block"
               @error="$event.target.src = '/img/logo/corradAF-logo.svg'"
             />
-            <span
-              v-if="
-                siteSettings?.value?.siteName && siteSettings?.value?.showSiteNameInHeader
-              "
-              class="text-lg font-semibold"
-              :style="{
-                fontSize: (siteSettings?.value?.siteNameFontSize || 18) + 'px',
-              }"
-            >
-              {{ siteSettings?.value?.siteName }}
-            </span>
+            <ClientOnly>
+              <span
+                v-if="
+                  siteSettings?.value?.siteName && siteSettings?.value?.showSiteNameInHeader
+                "
+                class="text-lg font-semibold"
+                :style="{
+                  fontSize: (siteSettings?.value?.siteNameFontSize || 18) + 'px',
+                }"
+              >
+                {{ siteSettings?.value?.siteName }}
+              </span>
+            </ClientOnly>
           </div>
         </nuxt-link>
       </div>
