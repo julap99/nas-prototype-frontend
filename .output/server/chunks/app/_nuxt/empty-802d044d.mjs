@@ -1,0 +1,77 @@
+import { ssrRenderAttrs, ssrRenderSlot } from 'vue/server-renderer';
+import { useSSRContext } from 'vue';
+import { a as _export_sfc } from '../server.mjs';
+import 'ofetch';
+import 'hookable';
+import 'unctx';
+import 'vue-router';
+import 'h3';
+import 'ufo';
+import 'destr';
+import 'klona';
+import '@unhead/ssr';
+import 'unhead';
+import '@unhead/shared';
+import 'vue3-perfect-scrollbar';
+import '@floating-ui/utils';
+import '@formkit/core';
+import '@formkit/utils';
+import '@formkit/inputs';
+import '@formkit/rules';
+import '@formkit/validation';
+import '@formkit/i18n';
+import '@formkit/themes';
+import '@formkit/observer';
+import '@iconify/vue/dist/offline';
+import '@iconify/vue';
+import 'vue3-dropzone';
+import '@formkit/addons';
+import 'cookie-es';
+import 'ohash';
+import 'pinia-plugin-persistedstate';
+import '@formkit/auto-animate/vue';
+import 'maska';
+import 'swiper/vue';
+import '@shimyshack/uid';
+import 'v-calendar';
+import 'vue-code-highlight';
+import 'codemirror';
+import '@codemirror/state';
+import '@codemirror/view';
+import '@codemirror/commands';
+import '@codemirror/language';
+import 'vue-country-flag-next';
+import 'sweetalert2';
+import 'defu';
+import '../../nitro/node-server.mjs';
+import 'node-fetch-native/polyfill';
+import 'node:http';
+import 'node:https';
+import 'unenv/runtime/fetch/index';
+import 'scule';
+import 'unstorage';
+import 'radix3';
+import 'node:fs';
+import 'node:url';
+import 'pathe';
+import 'memory-cache';
+import 'perf_hooks';
+import 'xss';
+import 'http-graceful-shutdown';
+
+const _sfc_main = {};
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${ssrRenderAttrs(_attrs)}>`);
+  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+  _push(`</div>`);
+}
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("layouts/empty.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const empty = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
+
+export { empty as default };
+//# sourceMappingURL=empty-802d044d.mjs.map

@@ -1,0 +1,1 @@
+import{Z as s,$ as r,n as o,X as d}from"./entry.2d6f33f5.js";const l=s(async(i,n)=>{let a,e;const{auth:t}=d();return([a,e]=r(()=>t.validate()),a=await a,e(),a).data.statusCode===401?!0:o("/dashboard")});export{l as default};

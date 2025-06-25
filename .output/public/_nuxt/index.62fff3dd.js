@@ -1,0 +1,1 @@
+import{Y as a,n,b as r,d as c,X as _,f as u}from"./entry.2d6f33f5.js";import{u as i}from"./user.96331eea.js";const l=u("h1",null,"Logout",-1),m=[l],x={__name:"index",async setup(p){let t,s;const e=i(),{auth:o}=_();return[t,s]=a(()=>o.logout()),await t,s(),e.setUsername(""),e.setRoles([]),e.setIsAuthenticated(!1),n("/login"),(d,h)=>(r(),c("div",null,m))}};export{x as default};

@@ -1,0 +1,1 @@
+import{a0 as s}from"./entry.2d6f33f5.js";const r=s({id:"user",state:()=>({username:null,roles:null,isAuth:!1}),persist:!0,actions:{setUsername(e){this.username=e},setRoles(e){this.roles=e},setIsAuthenticated(e){this.isAuth=e}}});export{r as u};
