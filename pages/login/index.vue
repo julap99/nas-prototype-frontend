@@ -13,8 +13,11 @@ const { $swal } = useNuxtApp();
 const username = ref("");
 const password = ref("");
 const userStore = useUserStore();
+const config = useRuntimeConfig();
 
 const togglePasswordVisibility = ref(false);
+
+console.log("ENV Test:", config.public.apiBaseUrl);
 
 const login = async () => {
   const { login: authLogin } = useAuth();

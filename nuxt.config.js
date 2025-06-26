@@ -9,6 +9,9 @@ export default defineNuxtConfig({
       secretKey: process.env.NUXT_METABASE_SECRET_KEY || "c98a5b005450e699b6d420f46e0062912ac75268716f1298c11d8bb11c291eb0",
       siteUrl: process.env.NUXT_METABASE_SITE_URL || "http://mb.sena.my",
     },
+    public: {
+      apiBaseUrl: process.env.NUXT_API_BASE_URL || 'http://localhost:3001',
+    }
   },
   modules: [
     "@nuxtjs/tailwindcss",

@@ -9,7 +9,7 @@ export const useApi = () => {
   
   // Configuration - Change this when connecting to external backend
   const USE_MOCK_DATA = true; // Set to false when connecting to real backend
-  const EXTERNAL_API_BASE_URL = process.env.NUXT_API_BASE_URL || 'http://localhost:3001/api';
+  const EXTERNAL_API_BASE_URL = runtimeConfig.public.apiBaseUrl || 'http://localhost:3001';
   
   /**
    * Simulate API delay for realistic mock behavior
