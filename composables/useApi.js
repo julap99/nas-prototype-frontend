@@ -5,11 +5,13 @@ import { mockApiResponses, mockAuthResponse } from '~/mock-data/index.js';
  * Currently uses mock data, but designed for easy migration to external NestJS backend
  */
 export const useApi = () => {
-  const runtimeConfig = useRuntimeConfig();
-  
   // Configuration - Change this when connecting to external backend
   const USE_MOCK_DATA = true; // Set to false when connecting to real backend
-  const EXTERNAL_API_BASE_URL = runtimeConfig.public.apiBaseUrl || 'http://localhost:3001';
+  
+  const getExternalApiBaseUrl = () => {
+    const runtimeConfig = useRuntimeConfig();
+    return runtimeConfig.public.apiBaseUrl || 'http://localhost:3001';
+  };
   
   /**
    * Simulate API delay for realistic mock behavior
@@ -55,7 +57,7 @@ export const useApi = () => {
    * Real API call handler (for future use)
    */
   const realApiCall = async (endpoint, options = {}) => {
-    const url = `${EXTERNAL_API_BASE_URL}${endpoint.replace('/api', '')}`;
+    const url = `${getExternalApiBaseUrl()}${endpoint.replace('/api', '')}`;
     
     return await $fetch(url, {
       ...options,
@@ -177,6 +179,6 @@ export const useApi = () => {
     
     // Configuration flags
     USE_MOCK_DATA,
-    EXTERNAL_API_BASE_URL
+    getExternalApiBaseUrl
   };
 }; 

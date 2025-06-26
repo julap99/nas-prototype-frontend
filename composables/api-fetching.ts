@@ -1,7 +1,5 @@
 import { useUserStore } from "@/stores/user";
 
-const config = useRuntimeConfig();
-
 // API Response Types
 interface LoginResponse {
   user: {
@@ -25,8 +23,13 @@ interface UserProfile {
   updatedAt: string;
 }
 
-// API Configuration
-const API_BASE_URL = config.public.apiBaseUrl || "http://localhost:3001";
+/**
+ * Get API base URL from runtime config
+ */
+const getApiBaseUrl = () => {
+  const config = useRuntimeConfig();
+  return config.public.apiBaseUrl || "http://localhost:3001";
+};
 
 /**
  * Get authentication headers
@@ -99,7 +102,7 @@ const apiRequest = async <T = any>(
     requireAuth = true,
   } = options;
 
-  const url = `${API_BASE_URL}${endpoint}`;
+  const url = `${getApiBaseUrl()}${endpoint}`;
 
   const requestHeaders = {
     ...(requireAuth
