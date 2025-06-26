@@ -1,4 +1,8 @@
 <script setup>
+import { useUserStore } from "~/stores/user";
+
+const userStore = useUserStore();
+
 const isVertical = ref(true);
 const isDesktop = ref(true);
 
@@ -135,11 +139,13 @@ const currentLogo = computed(() => {
             <ClientOnly>
               <span
                 v-if="
-                  siteSettings?.value?.siteName && siteSettings?.value?.showSiteNameInHeader
+                  siteSettings?.value?.siteName &&
+                  siteSettings?.value?.showSiteNameInHeader
                 "
                 class="text-lg font-semibold"
                 :style="{
-                  fontSize: (siteSettings?.value?.siteNameFontSize || 18) + 'px',
+                  fontSize:
+                    (siteSettings?.value?.siteNameFontSize || 18) + 'px',
                 }"
               >
                 {{ siteSettings?.value?.siteName }}
@@ -212,7 +218,9 @@ const currentLogo = computed(() => {
 
         <VDropdown placement="bottom-end" distance="13" name="notification">
           <button class="relative icon-btn h-10 w-10 rounded-full">
-            <span class="w-3 h-3 absolute top-1 right-2 rounded-full bg-primary"></span>
+            <span
+              class="w-3 h-3 absolute top-1 right-2 rounded-full bg-primary"
+            ></span>
             <Icon name="ic:round-notifications-none" class="" />
           </button>
           <template #popper>
@@ -230,19 +238,28 @@ const currentLogo = computed(() => {
                   <div class="bg-[rgb(var(--bg-1))] py-2 px-4">Today</div>
                   <a class="py-2 px-4 block">
                     <div class="flex items-center">
-                      <Icon name="ic:outline-circle" class="text-primary flex-none" />
+                      <Icon
+                        name="ic:outline-circle"
+                        class="text-primary flex-none"
+                      />
                       <span class="mx-2"
-                        >Terdapat Satu Pembayaran yang berlaku menggunakan bil Kuih Raya
-                        Cik Kiah</span
+                        >Terdapat Satu Pembayaran yang berlaku menggunakan bil
+                        Kuih Raya Cik Kiah</span
                       >
                       <div class="w-12 h-12 rounded-full ml-auto flex-none">
-                        <img class="rounded-full" src="@/assets/img/user/default.svg" />
+                        <img
+                          class="rounded-full"
+                          src="@/assets/img/user/default.svg"
+                        />
                       </div>
                     </div>
                   </a>
                   <a class="py-2 px-4 block">
                     <div class="flex items-center">
-                      <Icon name="ic:outline-circle" class="text-primary flex-none" />
+                      <Icon
+                        name="ic:outline-circle"
+                        class="text-primary flex-none"
+                      />
                       <span class="mx-2"
                         >Terdapat Satu Pembayaran yang berlaku menggunakan bil
                         Mercun</span
@@ -262,6 +279,8 @@ const currentLogo = computed(() => {
           </template>
         </VDropdown>
 
+        <!-- {{ userStore }} -->
+
         <VDropdown
           placement="bottom-end"
           distance="13"
@@ -271,10 +290,19 @@ const currentLogo = computed(() => {
           <button class="icon-btn profile px-2">
             <img
               class="w-8 h-8 object-cover rounded-full"
-              src="@/assets/img/user/default.svg"
+              :src="`https://ui-avatars.com/api/?name=${userStore.displayName}`"
             />
-            <div v-if="isDesktop" class="grid grid-cols-1 text-left ml-3 flex-none">
-              <p class="font-semibold text-sm truncate w-24 mb-0">Johan</p>
+            <div
+              v-if="isDesktop"
+              class="grid grid-cols-1 text-left ml-3 flex-none"
+            >
+              <p class="font-semibold text-sm truncate w-24 mb-0">
+                {{ userStore.displayName }}
+              </p>
+
+              <p class="font-normal text-sm truncate w-24 mb-0">
+                {{ userStore.username }}
+              </p>
             </div>
             <Icon name="ic:outline-keyboard-arrow-down" class="ml-3" />
           </button>

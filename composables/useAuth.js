@@ -1,8 +1,9 @@
 /**
- * Simplified Authentication composable using Pinia store
- * Pinia persistence plugin handles localStorage automatically
+ * Simplified Authentication composable using the new centralized API client
+ * Uses real backend endpoints with proper error handling
  */
 import { useUserStore } from "@/stores/user";
+import { authApi } from "@/composables/api-fetching";
 
 export const useAuth = () => {
   const { $swal } = useNuxtApp();
@@ -11,40 +12,42 @@ export const useAuth = () => {
   /**
    * Login with credentials
    */
-  const login = async (username, password) => {
+  const login = async (email, password) => {
     try {
-      const { auth } = useApi();
-      const res = await auth.login(username, password);
-      const data = res.data;
+      const response = await authApi.login(email, password);
 
-      if (data.statusCode === 200) {
+      if (response.user && response.accessToken) {
         // Use Pinia store's setAuth method
         userStore.setAuth({
-          username: data.data.username,
-          roles: data.data.roles,
-          token: data.data.token,
-          refreshToken: data.data.refreshToken,
+          username: response.user.email,
+          fullName: response.user.fullName,
+          role: response.user.role,
+          roles: [response.user.role], // Keep array format for compatibility
+          token: response.accessToken,
+          refreshToken: response.refreshToken,
         });
 
         return {
           success: true,
           message: "Login successful",
           user: {
-            username: data.data.username,
-            roles: data.data.roles,
+            username: response.user.email,
+            fullName: response.user.fullName,
+            role: response.user.role,
+            roles: [response.user.role],
           },
         };
       } else {
         return {
           success: false,
-          message: data.message || "Login failed",
+          message: "Login failed - invalid response format",
         };
       }
     } catch (error) {
       console.error("Login error:", error);
       return {
         success: false,
-        message: "Login failed. Please try again.",
+        message: error.message || "Login failed. Please try again.",
       };
     }
   };
@@ -54,9 +57,10 @@ export const useAuth = () => {
    */
   const logout = async (showMessage = true) => {
     try {
-      // Call logout API
-      const { auth } = useApi();
-      await auth.logout();
+      // Call logout API with refresh token
+      if (userStore.refreshToken) {
+        await authApi.logout(userStore.refreshToken);
+      }
     } catch (error) {
       console.error("Logout API error:", error);
     }
@@ -98,17 +102,38 @@ export const useAuth = () => {
   /**
    * Initialize authentication - validates current state
    */
-  const initializeAuth = () => {
-    // Validate authentication state using Pinia getter
-    const isValid = userStore.validateAuth();
-
-    if (!isValid) {
-      console.log("Authentication invalid or expired");
+  const initializeAuth = async () => {
+    // Check if user has a token
+    if (!userStore.token) {
+      console.log("No token found");
       return false;
     }
 
-    console.log("Authentication valid for user:", userStore.username);
-    return true;
+    try {
+      // Validate token with backend
+      const response = await authApi.validateToken();
+      
+      if (response.valid && response.user) {
+        // Update user data from server
+        userStore.setUserData(
+          response.user.email,
+          response.user.fullName,
+          [response.user.role],
+          response.user.role
+        );
+        
+        console.log("Authentication valid for user:", response.user.email);
+        return true;
+      } else {
+        console.log("Token validation failed");
+        userStore.clearAuth();
+        return false;
+      }
+    } catch (error) {
+      console.error("Token validation error:", error);
+      userStore.clearAuth();
+      return false;
+    }
   };
 
   /**
@@ -124,7 +149,9 @@ export const useAuth = () => {
   const getCurrentUser = () => {
     return {
       username: userStore.username,
+      fullName: userStore.fullName,
       roles: userStore.roles,
+      role: userStore.role,
       displayName: userStore.displayName,
       isAdmin: userStore.isAdmin,
     };
@@ -158,12 +185,37 @@ export const useAuth = () => {
     return userStore.timeUntilExpiry;
   };
 
+  /**
+   * Refresh authentication token
+   */
+  const refreshAuthToken = async () => {
+    try {
+      if (!userStore.refreshToken) {
+        throw new Error("No refresh token available");
+      }
+
+      const response = await authApi.refreshToken(userStore.refreshToken);
+      
+      userStore.setToken(
+        response.accessToken,
+        response.refreshToken
+      );
+
+      return true;
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      forceLogout("Session expired");
+      return false;
+    }
+  };
+
   return {
     // Authentication methods
     login,
     logout,
     forceLogout,
     initializeAuth,
+    refreshAuthToken,
 
     // State checks
     isAuthenticated,

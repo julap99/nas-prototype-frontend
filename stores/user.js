@@ -5,7 +5,9 @@ export const useUserStore = defineStore({
   state: () => ({
     // User data
     username: null,
-    roles: null,
+    fullName: null,
+    roles: null, // Keep as array for backward compatibility
+    role: null, // Single role for easier access
     isAuth: false,
     
     // Token management
@@ -16,7 +18,7 @@ export const useUserStore = defineStore({
   
   persist: {
     storage: persistedState.localStorage,
-    paths: ['username', 'roles', 'isAuth', 'token', 'tokenExpiry', 'refreshToken']
+    paths: ['username', 'fullName', 'roles', 'role', 'isAuth', 'token', 'tokenExpiry', 'refreshToken']
   },
   
   getters: {
@@ -40,7 +42,7 @@ export const useUserStore = defineStore({
      * Get user display name
      */
     displayName: (state) => {
-      return state.username || 'User';
+      return state.fullName || state.username || 'User';
     },
     
     /**
@@ -48,17 +50,27 @@ export const useUserStore = defineStore({
      */
     hasRole: (state) => {
       return (role) => {
+        // Check single role first
+        if (state.role === role) return true;
+        
+        // Fallback to roles array for backward compatibility
         if (!state.roles || !Array.isArray(state.roles)) return false;
         return state.roles.includes(role);
       };
     },
     
     /**
-     * Check if user is admin
+     * Check if user is admin (superadmin)
      */
     isAdmin: (state) => {
-      if (!state.roles || !Array.isArray(state.roles)) return false;
-      return state.roles.includes('Admin');
+      return state.role === 'superadmin' || (state.roles && state.roles.includes('superadmin'));
+    },
+    
+    /**
+     * Get user's primary role
+     */
+    primaryRole: (state) => {
+      return state.role || (state.roles && state.roles.length > 0 ? state.roles[0] : null);
     },
     
     /**
@@ -79,7 +91,9 @@ export const useUserStore = defineStore({
      */
     setAuth(userData) {
       this.username = userData.username;
+      this.fullName = userData.fullName;
       this.roles = userData.roles || [];
+      this.role = userData.role || (userData.roles && userData.roles.length > 0 ? userData.roles[0] : null);
       this.token = userData.token;
       this.refreshToken = userData.refreshToken;
       
@@ -93,7 +107,7 @@ export const useUserStore = defineStore({
       
       this.isAuth = true;
       
-      console.log('User authenticated:', this.username);
+      console.log('User authenticated:', this.username, 'Role:', this.role);
     },
     
     /**
@@ -101,7 +115,9 @@ export const useUserStore = defineStore({
      */
     clearAuth() {
       this.username = null;
+      this.fullName = null;
       this.roles = null;
+      this.role = null;
       this.isAuth = false;
       this.token = null;
       this.tokenExpiry = null;
@@ -113,9 +129,11 @@ export const useUserStore = defineStore({
     /**
      * Update user data only (keep token)
      */
-    setUserData(username, roles) {
+    setUserData(username, fullName, roles, role = null) {
       this.username = username;
+      this.fullName = fullName;
       this.roles = roles || [];
+      this.role = role || (roles && roles.length > 0 ? roles[0] : null);
     },
     
     /**
@@ -151,6 +169,7 @@ export const useUserStore = defineStore({
     
     setRoles(roles) {
       this.roles = roles;
+      this.role = roles && roles.length > 0 ? roles[0] : null;
     },
     
     setIsAuthenticated(isAuth) {

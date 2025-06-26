@@ -1,9 +1,13 @@
 <script setup>
-import Menu from "~/navigation/index.js";
+import { getNavigationByRole } from "~/navigation/index.js";
 import RSItem from "~/components/layouts/sidemenu/Item.vue";
+import { useUserStore } from "~/stores/user";
 
 // Use site settings composable
 const { siteSettings } = useSiteSettings();
+
+// Get user store to access role information
+const userStore = useUserStore();
 
 // Add computed to ensure logo reactivity
 const logoToShow = computed(() => {
@@ -22,12 +26,16 @@ const siteNameToShow = computed(() => {
   return siteSettings.value.siteName || "Jabatan Imigresen Malaysia";
 });
 
-// const menuItem = Menu;
+// Get user's role-based navigation
+const menuItem = computed(() => {
+  const userRole = userStore.primaryRole || 'asnaf';
+  return props.menuItem || getNavigationByRole(userRole);
+});
 
 const props = defineProps({
   menuItem: {
     type: Array,
-    default: () => Menu,
+    default: null,
     required: false,
   },
   sidebarToggle: {
