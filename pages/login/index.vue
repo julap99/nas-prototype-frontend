@@ -9,28 +9,11 @@ definePageMeta({
 });
 
 const { $swal } = useNuxtApp();
-const { siteSettings, loading: siteSettingsLoading } = useSiteSettings();
 const username = ref("");
 const password = ref("");
 const userStore = useUserStore();
 
 const togglePasswordVisibility = ref(false);
-
-// Get login logo with fallback
-const getLoginLogo = () => {
-  if (siteSettingsLoading.value) {
-    return "/img/logo/corradAF-logo.svg";
-  }
-  return siteSettings.value?.siteLoginLogo || "/img/logo/corradAF-logo.svg";
-};
-
-// Get site name with fallback
-const getSiteName = () => {
-  if (siteSettingsLoading.value) {
-    return "Login Logo";
-  }
-  return siteSettings.value?.siteName || "Login Logo";
-};
 
 const login = async () => {
   try {
@@ -99,10 +82,10 @@ const handleLoadCallback = (response) => {
       <rs-card class="h-screen md:h-auto px-10 md:px-16 py-12 md:py-20 mb-0">
         <div class="img-container flex justify-center items-center mb-5">
           <img
-            :src="getLoginLogo()"
-            :alt="getSiteName()"
+            src="@/assets/img/logo/lzs-logo.png"
+            alt="Lembaga Zakat Selangor"
             class="max-w-[180px] max-h-[60px] object-contain"
-            @error="$event.target.src = '/img/logo/corradAF-logo.svg'"
+            @error="$event.target.src = '/img/logo/lzs-logo.png'"
           />
         </div>
         <p class="text-slate-500 text-lg mb-6">Log masuk ke akaun anda</p>
