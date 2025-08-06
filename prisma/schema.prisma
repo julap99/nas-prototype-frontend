@@ -1,0 +1,405 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model audit {
+  auditID          Int       @id @default(autoincrement())
+  auditIP          String?   @db.VarChar(255)
+  auditURL         String?   @db.VarChar(255)
+  auditURLMethod   String?   @db.VarChar(255)
+  auditURLPayload  String?   @db.VarChar(255)
+  auditCreatedDate DateTime? @db.DateTime(0)
+}
+
+model lookup {
+  lookupID           Int       @id @default(autoincrement())
+  lookupOrder        Int?
+  lookupTitle        String?   @db.VarChar(255)
+  lookupRefCode      String?   @db.VarChar(255)
+  lookupValue        String?   @db.VarChar(255)
+  lookupType         String?   @db.VarChar(255)
+  lookupStatus       String?   @db.VarChar(255)
+  lookupCreatedDate  DateTime? @db.DateTime(0)
+  lookupModifiedDate DateTime? @db.DateTime(0)
+}
+
+model role {
+  roleID           Int        @id @default(autoincrement())
+  roleName         String?    @db.VarChar(255)
+  roleDescription  String?    @db.VarChar(255)
+  roleStatus       String?    @db.VarChar(255)
+  roleCreatedDate  DateTime?  @db.DateTime(0)
+  roleModifiedDate DateTime?  @db.DateTime(0)
+  userrole         userrole[]
+}
+
+model user {
+  userID           Int        @id @default(autoincrement())
+  userSecretKey    String?    @db.VarChar(255)
+  userUsername     String?    @db.VarChar(255)
+  userPassword     String?    @db.VarChar(255)
+  userFullName     String?    @db.VarChar(255)
+  userEmail        String?    @db.VarChar(255)
+  userPhone        String?    @db.VarChar(255)
+  userStatus       String?    @db.VarChar(255)
+  userCreatedDate  DateTime?  @db.DateTime(0)
+  userModifiedDate DateTime?  @db.DateTime(0)
+  userrole         userrole[]
+}
+
+model userrole {
+  userRoleID          Int      @id @default(autoincrement())
+  userRoleUserID      Int      @default(0)
+  userRoleRoleID      Int      @default(0)
+  userRoleCreatedDate DateTime @db.DateTime(0)
+  role                role     @relation(fields: [userRoleRoleID], references: [roleID], onDelete: NoAction, onUpdate: NoAction, map: "FK_userrole_role")
+  user                user     @relation(fields: [userRoleUserID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "FK_userrole_user")
+
+  @@index([userRoleRoleID], map: "FK_userrole_role")
+  @@index([userRoleUserID], map: "FK_userrole_user")
+}
+
+model site_settings {
+  settingID            Int       @id @default(autoincrement())
+  siteName             String?   @db.VarChar(255)
+  siteNameFontSize     Int?      @default(18)
+  siteDescription      String?   @db.Text
+  siteLogo             String?   @db.VarChar(500)
+  siteLoadingLogo      String?   @db.VarChar(500)
+  siteFavicon          String?   @db.VarChar(500)
+  showSiteNameInHeader Boolean?  @default(true)
+  primaryColor         String?   @db.VarChar(50)
+  secondaryColor       String?   @db.VarChar(50)
+  successColor         String?   @db.VarChar(50)
+  infoColor            String?   @db.VarChar(50)
+  warningColor         String?   @db.VarChar(50)
+  dangerColor          String?   @db.VarChar(50)
+  customCSS            String?   @db.Text
+  themeMode            String?   @db.VarChar(50)
+  customThemeFile      String?   @db.VarChar(500)
+  currentFont          String?   @db.VarChar(255)
+  fontSource           String?   @db.VarChar(500)
+  seoTitle             String?   @db.VarChar(255)
+  seoDescription       String?   @db.Text
+  seoKeywords          String?   @db.Text
+  seoAuthor            String?   @db.VarChar(255)
+  seoOgImage           String?   @db.VarChar(500)
+  seoTwitterCard       String?   @default("summary_large_image") @db.VarChar(50)
+  seoCanonicalUrl      String?   @db.VarChar(500)
+  seoRobots            String?   @default("index, follow") @db.VarChar(100)
+  seoGoogleAnalytics   String?   @db.VarChar(255)
+  seoGoogleTagManager  String?   @db.VarChar(255)
+  seoFacebookPixel     String?   @db.VarChar(255)
+  settingCreatedDate   DateTime? @db.DateTime(0)
+  settingModifiedDate  DateTime? @db.DateTime(0)
+  siteLoginLogo        String?   @db.VarChar(500)
+}
+
+model notification_analytics {
+  id              String        @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  notification_id String        @db.VarChar(36)
+  channel_type    String        @db.VarChar(20)
+  metric_type     String        @db.VarChar(30)
+  metric_value    Int?          @default(0)
+  recorded_at     DateTime?     @default(now()) @db.Timestamp(0)
+  metadata        Json?
+  notifications   notifications @relation(fields: [notification_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notification_analytics_ibfk_1")
+
+  @@index([notification_id], map: "idx_notification_analytics_notification_id")
+}
+
+model notification_categories {
+  id            String          @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  name          String          @db.VarChar(100)
+  value         String          @unique(map: "value") @db.VarChar(50)
+  description   String?         @db.Text
+  created_at    DateTime?       @default(now()) @db.Timestamp(0)
+  updated_at    DateTime?       @default(now()) @db.Timestamp(0)
+  notifications notifications[]
+}
+
+model notification_channels {
+  id              String        @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  notification_id String        @db.VarChar(36)
+  channel_type    String        @db.VarChar(20)
+  is_enabled      Boolean?      @default(true)
+  created_at      DateTime?     @default(now()) @db.Timestamp(0)
+  notifications   notifications @relation(fields: [notification_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notification_channels_ibfk_1")
+
+  @@index([notification_id], map: "notification_id")
+}
+
+model notification_delivery {
+  id              Int       @id @default(autoincrement())
+  notification_id Int
+  channel_type    String
+  recipient       String
+  is_success      Boolean   @default(false)
+  error_message   String?   @db.Text
+  attempts        Int       @default(0)
+  sent_at         DateTime?
+  delivered_at    DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime
+}
+
+model notification_delivery_config {
+  id              Int      @id @default(autoincrement())
+  channel_type    String   @unique
+  is_enabled      Boolean  @default(false)
+  provider        String
+  provider_config Json
+  status          String   @default("Not Configured")
+  success_rate    Float    @default(0) @db.Float
+  created_at      DateTime @default(now())
+  updated_at      DateTime
+  created_by      Int
+  updated_by      Int
+}
+
+model notification_delivery_settings {
+  id              Int      @id @default(1)
+  auto_retry      Boolean  @default(true)
+  enable_fallback Boolean  @default(true)
+  max_retries     Int      @default(3)
+  retry_delay     Int      @default(30)
+  priority        String   @default("normal")
+  enable_reports  Boolean  @default(true)
+  created_at      DateTime @default(now())
+  updated_at      DateTime
+  created_by      Int
+  updated_by      Int
+}
+
+model notification_logs {
+  id              String    @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  notification_id String?   @db.VarChar(36)
+  action          String    @db.VarChar(50)
+  actor           String?   @db.VarChar(100)
+  actor_id        String?   @db.VarChar(36)
+  channel_type    String?   @db.VarChar(20)
+  status          String?   @db.VarChar(30)
+  details         String?   @db.Text
+  source_ip       String?   @db.VarChar(50)
+  error_code      String?   @db.VarChar(50)
+  error_message   String?   @db.Text
+  metadata        Json?
+  created_at      DateTime? @default(now()) @db.Timestamp(0)
+
+  @@index([action], map: "idx_notification_logs_action")
+  @@index([channel_type], map: "idx_notification_logs_channel_type")
+  @@index([created_at], map: "idx_notification_logs_created_at")
+  @@index([notification_id], map: "idx_notification_logs_notification_id")
+  @@index([status], map: "idx_notification_logs_status")
+}
+
+model notification_queue {
+  id                      String                  @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  notification_id         String                  @db.VarChar(36)
+  recipient_id            String                  @db.VarChar(36)
+  scheduled_for           DateTime                @db.Timestamp(0)
+  priority                Int?                    @default(5)
+  attempts                Int?                    @default(0)
+  max_attempts            Int?                    @default(3)
+  status                  String?                 @default("queued") @db.VarChar(20)
+  last_attempt_at         DateTime?               @db.Timestamp(0)
+  error_message           String?                 @db.Text
+  created_at              DateTime?               @default(now()) @db.Timestamp(0)
+  updated_at              DateTime?               @default(now()) @db.Timestamp(0)
+  notifications           notifications           @relation(fields: [notification_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notification_queue_ibfk_1")
+  notification_recipients notification_recipients @relation(fields: [recipient_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notification_queue_ibfk_2")
+
+  @@index([scheduled_for], map: "idx_notification_queue_scheduled_for")
+  @@index([status], map: "idx_notification_queue_status")
+  @@index([notification_id], map: "notification_id")
+  @@index([recipient_id], map: "recipient_id")
+}
+
+model notification_recipients {
+  id                 String               @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  notification_id    String               @db.VarChar(36)
+  user_id            String               @db.VarChar(36)
+  email              String?              @db.VarChar(255)
+  channel_type       String               @db.VarChar(20)
+  status             String?              @default("pending") @db.VarChar(20)
+  sent_at            DateTime?            @db.Timestamp(0)
+  delivered_at       DateTime?            @db.Timestamp(0)
+  opened_at          DateTime?            @db.Timestamp(0)
+  clicked_at         DateTime?            @db.Timestamp(0)
+  error_message      String?              @db.Text
+  ab_test_variant    String?              @db.VarChar(1)
+  created_at         DateTime?            @default(now()) @db.Timestamp(0)
+  updated_at         DateTime?            @default(now()) @db.Timestamp(0)
+  notification_queue notification_queue[]
+  notifications      notifications        @relation(fields: [notification_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notification_recipients_ibfk_1")
+
+  @@index([status], map: "idx_notification_recipients_status")
+  @@index([user_id], map: "idx_notification_recipients_user_id")
+  @@index([notification_id], map: "notification_id")
+}
+
+model notification_template_versions {
+  id                     String                 @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  template_id            String                 @db.VarChar(36)
+  version                String                 @db.VarChar(20)
+  name                   String                 @db.VarChar(100)
+  description            String?                @db.Text
+  subject                String?                @db.VarChar(255)
+  preheader              String?                @db.VarChar(255)
+  email_content          String?                @db.Text
+  push_title             String?                @db.VarChar(100)
+  push_body              String?                @db.VarChar(300)
+  push_icon              String?                @db.VarChar(500)
+  push_url               String?                @db.Text
+  sms_content            String?                @db.Text
+  category               String?                @db.VarChar(50)
+  channels               Json?
+  status                 String?                @default("Draft") @db.VarChar(20)
+  tags                   String?                @db.Text
+  is_personal            Boolean?               @default(false)
+  from_name              String?                @db.VarChar(100)
+  reply_to               String?                @db.VarChar(255)
+  track_opens            Boolean?               @default(true)
+  variables              Json?
+  is_active              Boolean?               @default(true)
+  change_description     String?                @db.Text
+  is_current             Boolean?               @default(false)
+  created_by             String?                @db.VarChar(36)
+  created_at             DateTime?              @default(now()) @db.Timestamp(0)
+  notification_templates notification_templates @relation(fields: [template_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_template_versions_template_id")
+
+  @@index([created_at], map: "idx_template_versions_created_at")
+  @@index([is_current], map: "idx_template_versions_is_current")
+  @@index([template_id], map: "idx_template_versions_template_id")
+  @@index([template_id, version], map: "idx_template_versions_template_version")
+  @@index([version], map: "idx_template_versions_version")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model notification_templates {
+  id                             String                           @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  name                           String                           @db.VarChar(100)
+  value                          String                           @unique(map: "value") @db.VarChar(50)
+  subject                        String?                          @db.VarChar(255)
+  email_content                  String?                          @db.Text
+  push_title                     String?                          @db.VarChar(100)
+  push_body                      String?                          @db.VarChar(300)
+  variables                      Json?
+  is_active                      Boolean?                         @default(true)
+  created_at                     DateTime?                        @default(now()) @db.Timestamp(0)
+  updated_at                     DateTime?                        @default(now()) @db.Timestamp(0)
+  description                    String?                          @db.Text
+  preheader                      String?                          @db.VarChar(255)
+  push_icon                      String?                          @db.VarChar(500)
+  push_url                       String?                          @db.Text
+  sms_content                    String?                          @db.Text
+  category                       String?                          @db.VarChar(50)
+  channels                       Json?
+  status                         String?                          @default("Draft") @db.VarChar(20)
+  version                        String?                          @default("1.0") @db.VarChar(20)
+  tags                           String?                          @db.Text
+  is_personal                    Boolean?                         @default(false)
+  from_name                      String?                          @db.VarChar(100)
+  reply_to                       String?                          @db.VarChar(255)
+  track_opens                    Boolean?                         @default(true)
+  created_by                     String?                          @db.VarChar(36)
+  updated_by                     String?                          @db.VarChar(36)
+  notification_template_versions notification_template_versions[]
+  notifications                  notifications[]
+}
+
+model notification_user_segments {
+  id              String        @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  notification_id String        @db.VarChar(36)
+  segment_id      String        @db.VarChar(36)
+  created_at      DateTime?     @default(now()) @db.Timestamp(0)
+  notifications   notifications @relation(fields: [notification_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notification_user_segments_ibfk_1")
+  user_segments   user_segments @relation(fields: [segment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notification_user_segments_ibfk_2")
+
+  @@index([notification_id], map: "notification_id")
+  @@index([segment_id], map: "segment_id")
+}
+
+model notifications {
+  id                         String                       @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  title                      String                       @db.VarChar(255)
+  type                       String                       @db.VarChar(20)
+  priority                   String                       @db.VarChar(20)
+  category_id                String?                      @db.VarChar(36)
+  status                     String?                      @default("draft") @db.VarChar(20)
+  delivery_type              String                       @db.VarChar(20)
+  scheduled_at               DateTime?                    @db.Timestamp(0)
+  timezone                   String?                      @default("UTC") @db.VarChar(50)
+  expires_at                 DateTime?                    @db.Timestamp(0)
+  enable_ab_testing          Boolean?                     @default(false)
+  ab_test_split              Int?                         @default(50)
+  ab_test_name               String?                      @db.VarChar(100)
+  enable_tracking            Boolean?                     @default(true)
+  audience_type              String                       @db.VarChar(20)
+  specific_users             String?                      @db.Text
+  user_status                String?                      @db.VarChar(20)
+  registration_period        String?                      @db.VarChar(50)
+  exclude_unsubscribed       Boolean?                     @default(true)
+  respect_do_not_disturb     Boolean?                     @default(true)
+  content_type               String                       @db.VarChar(20)
+  template_id                String?                      @db.VarChar(36)
+  email_subject              String?                      @db.VarChar(255)
+  email_content              String?                      @db.Text
+  call_to_action_text        String?                      @db.VarChar(100)
+  call_to_action_url         String?                      @db.Text
+  push_title                 String?                      @db.VarChar(100)
+  push_body                  String?                      @db.VarChar(300)
+  push_image_url             String?                      @db.Text
+  estimated_reach            Int?                         @default(0)
+  actual_sent                Int?                         @default(0)
+  created_by                 String                       @db.VarChar(36)
+  created_at                 DateTime?                    @default(now()) @db.Timestamp(0)
+  updated_at                 DateTime?                    @default(now()) @db.Timestamp(0)
+  sent_at                    DateTime?                    @db.Timestamp(0)
+  notification_analytics     notification_analytics[]
+  notification_channels      notification_channels[]
+  notification_queue         notification_queue[]
+  notification_recipients    notification_recipients[]
+  notification_user_segments notification_user_segments[]
+  notification_categories    notification_categories?     @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notifications_ibfk_1")
+  notification_templates     notification_templates?      @relation(fields: [template_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notifications_ibfk_2")
+
+  @@index([category_id], map: "category_id")
+  @@index([created_by], map: "idx_notifications_created_by")
+  @@index([scheduled_at], map: "idx_notifications_scheduled_at")
+  @@index([status], map: "idx_notifications_status")
+  @@index([template_id], map: "template_id")
+}
+
+model user_notification_preferences {
+  id                   String    @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  user_id              String    @db.VarChar(36)
+  channel_type         String    @db.VarChar(20)
+  category_value       String?   @db.VarChar(50)
+  is_enabled           Boolean?  @default(true)
+  do_not_disturb_start DateTime? @db.Time(0)
+  do_not_disturb_end   DateTime? @db.Time(0)
+  timezone             String?   @default("UTC") @db.VarChar(50)
+  created_at           DateTime? @default(now()) @db.Timestamp(0)
+  updated_at           DateTime? @default(now()) @db.Timestamp(0)
+
+  @@unique([user_id, channel_type, category_value], map: "user_id")
+  @@index([user_id], map: "idx_user_notification_preferences_user_id")
+}
+
+model user_segments {
+  id                         String                       @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  name                       String                       @db.VarChar(100)
+  value                      String                       @unique(map: "value") @db.VarChar(50)
+  description                String?                      @db.Text
+  criteria                   Json
+  is_active                  Boolean?                     @default(true)
+  created_at                 DateTime?                    @default(now()) @db.Timestamp(0)
+  updated_at                 DateTime?                    @default(now()) @db.Timestamp(0)
+  notification_user_segments notification_user_segments[]
+}
