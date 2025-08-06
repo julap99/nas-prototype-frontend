@@ -29,6 +29,19 @@ export default [
             ]
           }
         }
+      },
+      {
+        "title": "Profiling - QR",
+        "path": "/profiling/quick-registration",
+        "icon": "",
+        "child": [],
+        "meta": {
+          "auth": {
+            "role": [
+              "Developer"
+            ]
+          }
+        }
       }
     ],
     "meta": {

@@ -40,7 +40,9 @@
       }"
     >
       <template #kodKomponen="{ value }">
-        <span class="font-mono text-xs text-gray-700">{{ value.kodKomponen }}</span>
+        <span class="font-mono text-xs text-gray-700">{{
+          value.kodKomponen
+        }}</span>
       </template>
       <!-- Custom slot for action buttons -->
       <template #actions="{ value }">
@@ -122,9 +124,7 @@
                 Process Flow Configuration
               </h3>
 
-              <div
-                class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4"
-              >
+              <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                 <div class="flex items-start space-x-3">
                   <Icon
                     name="ic:round-info"
@@ -134,30 +134,49 @@
                   <div class="text-sm text-blue-800">
                     <p class="font-medium mb-1">Process Flow Order</p>
                     <p>
-                      The order you select processes determines the workflow
-                      sequence. The first process you select will be step 1, the
-                      second will be step 2, and so on.
+                      Select and order the processes for this component. Drag to reorder steps. Only selected processes will be included in the workflow.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div
-                v-if="processesLoading"
-                class="flex justify-center items-center py-4"
-              >
-                <div
-                  class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"
-                ></div>
+              <div v-if="processesLoading" class="flex justify-center items-center py-4">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
                 <span class="ml-2 text-gray-600">Loading processes...</span>
               </div>
 
-              <div v-else class="space-y-4">
+              <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Available Processes -->
-                <div class="space-y-3">
-                  <div class="flex justify-between items-center">
+                <div>
+                  <div class="flex justify-between items-center mb-2">
                     <span class="text-sm font-medium text-gray-700">
-                      Available Processes ({{ availableProcesses.length }})
+                      Available Processes ({{ availableProcessesForSelection.length }})
+                    </span>
+                  </div>
+                  <div class="max-h-64 overflow-y-auto border rounded-lg p-3 space-y-2 bg-white">
+                    <div
+                      v-for="process in availableProcessesForSelection"
+                      :key="process.kodProses"
+                      class="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer"
+                      @click="addProcess(process.kodProses)"
+                    >
+                      <Icon name="ic:round-arrow-forward" class="text-blue-400" size="18" />
+                      <div class="flex-1">
+                        <div class="font-medium text-sm">{{ process.namaProses }}</div>
+                        <div class="text-xs text-gray-500">{{ process.idPage }}</div>
+                      </div>
+                    </div>
+                    <div v-if="availableProcessesForSelection.length === 0" class="text-xs text-gray-400 text-center py-4">
+                      All processes have been selected
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Selected Workflow Steps -->
+                <div>
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-700">
+                      Selected Workflow Steps ({{ selectedProcesses.length }})
                     </span>
                     <RsButton
                       @click="clearProcessFlow"
@@ -168,116 +187,31 @@
                       Clear Flow
                     </RsButton>
                   </div>
-
-                  <div
-                    class="max-h-48 overflow-y-auto border rounded-lg p-3 space-y-2"
+                  <draggable
+                    v-model="selectedProcesses"
+                    tag="ul"
+                    class="space-y-2 min-h-[48px] border rounded-lg p-3 bg-white"
+                    :animation="200"
+                    item-key="kodProses"
                   >
-                    <div
-                      v-for="process in availableProcesses"
-                      :key="process.kodProses"
-                      class="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-md"
-                    >
-                      <FormKit
-                        :name="`process_${process.kodProses}`"
-                        type="checkbox"
-                        :value="process.kodProses"
-                        :checked="selectedProcesses.includes(process.kodProses)"
-                        @change="toggleProcess(process.kodProses)"
-                      />
-                      <div class="flex-1">
-                        <div class="font-medium text-sm">
-                          {{ process.namaProses }}
-                        </div>
-                        <div class="text-xs text-gray-500">
-                          {{ process.idPage }}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Process Flow Preview -->
-                <div class="space-y-3">
-                  <div class="flex justify-between items-center">
-                    <span class="text-sm font-medium text-gray-700">
-                      Process Flow ({{ selectedProcesses.length }} steps)
-                    </span>
-                    <span class="text-xs text-gray-500"> Drag to reorder </span>
-                  </div>
-
-                  <div
-                    v-if="selectedProcesses.length > 0"
-                    class="border rounded-lg p-3"
-                  >
-                    <div class="space-y-2">
-                      <div
-                        v-for="(processCode, index) in selectedProcesses"
-                        :key="processCode"
-                        class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border"
-                      >
-                        <!-- Step Number -->
-                        <div
-                          class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium"
-                        >
+                    <template #item="{ element, index }">
+                      <li class="flex items-center space-x-3 p-2 bg-gray-50 rounded-md border">
+                        <Icon name="ic:round-drag-indicator" class="text-gray-400 cursor-move" size="18" />
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
                           {{ index + 1 }}
                         </div>
-
-                        <!-- Process Info -->
                         <div class="flex-1">
-                          <div class="font-medium text-sm">
-                            {{ getProcessName(processCode) }}
-                          </div>
-                          <div class="text-xs text-gray-500">
-                            {{ getProcessPage(processCode) }}
-                          </div>
+                          <div class="font-medium text-sm">{{ getProcessName(element) }}</div>
+                          <div class="text-xs text-gray-500">{{ getProcessPage(element) }}</div>
                         </div>
-
-                        <!-- Actions -->
-                        <div class="flex items-center space-x-1">
-                          <button
-                            @click="moveProcessUp(index)"
-                            :disabled="index === 0"
-                            class="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                            title="Move Up"
-                          >
-                            <Icon name="ic:round-keyboard-arrow-up" size="16" />
-                          </button>
-                          <button
-                            @click="moveProcessDown(index)"
-                            :disabled="index === selectedProcesses.length - 1"
-                            class="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                            title="Move Down"
-                          >
-                            <Icon
-                              name="ic:round-keyboard-arrow-down"
-                              size="16"
-                            />
-                          </button>
-                          <button
-                            @click="removeProcess(index)"
-                            class="p-1 text-red-400 hover:text-red-600"
-                            title="Remove from Flow"
-                          >
-                            <Icon name="ic:round-close" size="16" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    v-else
-                    class="text-center py-6 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg"
-                  >
-                    <Icon
-                      name="ic:round-playlist-add"
-                      class="mx-auto mb-2"
-                      size="24"
-                    />
-                    <p class="text-sm">No processes selected</p>
-                    <p class="text-xs">
-                      Select processes above to create your workflow
-                    </p>
+                        <button @click.stop="removeProcess(index)" class="p-1 text-red-400 hover:text-red-600" title="Remove from Flow">
+                          <Icon name="ic:round-close" size="16" />
+                        </button>
+                      </li>
+                    </template>
+                  </draggable>
+                  <div v-if="selectedProcesses.length === 0" class="text-xs text-gray-400 text-center py-4">
+                    No processes selected. Click on a process from the left to add.
                   </div>
                 </div>
               </div>
@@ -298,7 +232,12 @@
     </RsModal>
 
     <!-- View Component Details Modal -->
-    <RsModal v-model="showViewModal" title="Component Details" size="lg" position="center">
+    <RsModal
+      v-model="showViewModal"
+      title="Component Details"
+      size="lg"
+      position="center"
+    >
       <template #body>
         <!-- Loading State -->
         <div
@@ -533,7 +472,12 @@
     </RsModal>
 
     <!-- Delete Confirmation Modal -->
-    <RsModal v-model="showDeleteModal" title="Confirm Deletion" size="md" position="center">
+    <RsModal
+      v-model="showDeleteModal"
+      title="Confirm Deletion"
+      size="md"
+      position="center"
+    >
       <template #body>
         <div class="p-4 text-center">
           <Icon
@@ -569,6 +513,7 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useToast } from "~/composables/useToast";
 import { useApiFetching } from "~/composables/useApiFetching";
+import draggable from "vuedraggable";
 
 console.log("📄 Components page script setup executed");
 
@@ -654,6 +599,13 @@ const viewModalLoading = ref(false);
 // Computed properties
 const availableProcesses = computed(() => {
   return processes.value.filter((process) => process.status !== 0); // Only active processes
+});
+
+// Add a computed for availableProcessesForSelection
+const availableProcessesForSelection = computed(() => {
+  return processes.value.filter(
+    (process) => !selectedProcesses.value.includes(process.kodProses) && process.status !== 0
+  );
 });
 
 // Load components on mount
@@ -969,9 +921,12 @@ const editComponent = async (component) => {
 
   try {
     // Try to fetch the latest component data from the API
-    console.log("📡 Fetching component data for ID:", component.actions);
+    console.log(
+      "📡 Fetching component data for kodKomponen:",
+      component.kodKomponen
+    );
     const componentData = await apiRequest(
-      `/configuration/profiling/component/${component.actions}`,
+      `/configuration/profiling/component/${component.kodKomponen}`,
       {
         method: "GET",
       }
@@ -1086,10 +1041,10 @@ const viewComponent = async (component) => {
     // Fetch the latest component data from the API
     console.log(
       "📡 Fetching component data for viewing ID:",
-      component.actions
+      component.kodKomponen
     );
     const componentData = await apiRequest(
-      `/configuration/profiling/component/${component.actions}`,
+      `/configuration/profiling/component/${component.kodKomponen}`,
       {
         method: "GET",
       }
@@ -1244,6 +1199,13 @@ const clearProcessFlow = () => {
   selectedProcesses.value = [];
 };
 
+// Add process to selected list
+const addProcess = (processCode) => {
+  if (!selectedProcesses.value.includes(processCode)) {
+    selectedProcesses.value.push(processCode);
+  }
+};
+
 // Move process up in the flow
 const moveProcessUp = (index) => {
   if (index > 0) {
@@ -1368,9 +1330,12 @@ const deleteComponent = async () => {
   if (componentToDelete.value) {
     try {
       console.log("🗑️ Deleting component:", componentToDelete.value);
-      await apiRequest(`/configuration/profiling/component/${componentToDelete.value.actions}`, {
-        method: "DELETE",
-      });
+      await apiRequest(
+        `/configuration/profiling/component/${componentToDelete.value.actions}`,
+        {
+          method: "DELETE",
+        }
+      );
       toast.success("Component deleted successfully");
       showDeleteModal.value = false;
       componentToDelete.value = null;
