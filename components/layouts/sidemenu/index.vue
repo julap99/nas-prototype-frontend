@@ -2,25 +2,6 @@
 import Menu from "~/navigation/index.js";
 import RSItem from "~/components/layouts/sidemenu/Item.vue";
 
-// Use site settings composable
-const { siteSettings } = useSiteSettings();
-
-// Add computed to ensure logo reactivity
-const logoToShow = computed(() => {
-  // Always try to use the siteLogo from settings first
-  if (siteSettings.value?.siteLogo && siteSettings.value.siteLogo.trim() !== '') {
-    return siteSettings.value.siteLogo;
-  }
-  // Fallback to default logo if siteLogo is not set
-  return '/img/logo/corradAF-logo.svg'; 
-});
-
-const siteNameToShow = computed(() => {
-  return siteSettings.value.siteName || 'Jabatan Imigresen Malaysia';
-});
-
-// const menuItem = Menu;
-
 const props = defineProps({
   menuItem: {
     type: Array,
@@ -60,18 +41,11 @@ onMounted(() => {
           >
             <nuxt-link to="/" class="flex items-center justify-center">
               <img
-                :src="logoToShow"
-                class="logo h-8"
+                src="@/assets/img/logo/lzs-logo.png"
+                class="logo h-10"
                 alt="logo"
-                @error="$event.target.src = '/img/logo/corradAF-logo.svg'"
+                @error="$event.target.src = '/img/logo/lzs-logo.png'"
               />
-              <div
-                v-if="siteSettings.value?.showSiteNameInHeader && siteSettings.value?.siteName"
-                class="title-text app-title font-semibold text-xl ml-3"
-                :style="{ fontSize: (siteSettings.value?.siteNameFontSize || 18) + 'px' }"
-              >
-                {{ siteNameToShow }}
-              </div>
             </nuxt-link>
           </div>
         </div>

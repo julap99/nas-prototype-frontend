@@ -1,6 +1,4 @@
 <script setup>
-const { siteSettings, loading: siteSettingsLoading } = useSiteSettings();
-
 const showMessage = ref(false);
 
 setTimeout(() => {
@@ -11,51 +9,6 @@ const refreshPage = () => {
   // hard refresh
   window.location.reload(true);
 };
-
-// Fast loading logo - fetch during SSR to prevent hydration flash
-const { data: quickLoadingData } = await useLazyFetch("/api/devtool/config/loading-logo", {
-  default: () => ({
-    data: {
-      siteLoadingLogo: '',
-      siteName: 'Loading...'
-    }
-  }),
-  transform: (response) => response.data || {
-    siteLoadingLogo: '',
-    siteName: 'Loading...'
-  }
-});
-
-const loadingLogoSrc = computed(() => {
-  // First priority: Quick loading data if available
-  if (quickLoadingData.value?.siteLoadingLogo) {
-    return quickLoadingData.value.siteLoadingLogo;
-  }
-  
-  // Second priority: Full site settings if loaded
-  if (!siteSettingsLoading.value && siteSettings.value.siteLoadingLogo) {
-    return siteSettings.value.siteLoadingLogo;
-  }
-  
-  // Fallback: Default logo
-  return '/img/logo/corradAF-logo.svg';
-});
-
-// Get site name with fallback
-const getSiteName = () => {
-  // First priority: Quick loading data
-  if (quickLoadingData.value?.siteName) {
-    return quickLoadingData.value.siteName;
-  }
-  
-  // Second priority: Full site settings
-  if (!siteSettingsLoading.value && siteSettings.value.siteName) {
-    return siteSettings.value.siteName;
-  }
-  
-  // Fallback
-  return 'Loading...';
-};
 </script>
 
 <template>
@@ -64,9 +17,9 @@ const getSiteName = () => {
       <div>
         <div class="img-container flex justify-center items-center mb-5">
           <!-- Use custom loading logo if available, otherwise show single default logo -->
-          <img 
-            :src="loadingLogoSrc" 
-            :alt="getSiteName()" 
+          <img
+            src="@/assets/img/logo/lzs-logo.png"
+            alt="Lembaga Zakat Selangor"
             class="max-w-[180px] max-h-[60px] object-contain"
           />
         </div>
