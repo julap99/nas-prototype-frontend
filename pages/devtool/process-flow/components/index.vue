@@ -76,7 +76,7 @@
     <RsModal
       v-model="showModal"
       :title="isEditing ? 'Edit Component' : 'Add New Component'"
-      size="lg"
+      size="xl"
       position="center"
       :actions="false"
     >
