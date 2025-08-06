@@ -59,7 +59,7 @@ export default [
         },
       },
       {
-        title: "Profiling - QR",
+        title: "Penolong Amil",
         path: "/profiling/quick-registration",
         icon: "",
         child: [],
