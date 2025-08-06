@@ -39,6 +39,17 @@
         outsideBorder: true,
       }"
     >
+      <template #category="{ value }">
+        <div class="flex items-center">
+          <span
+            v-if="value"
+            class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+          >
+            {{ value.category }}
+          </span>
+          <span v-else class="text-sm text-gray-400 italic">No category</span>
+        </div>
+      </template>
       <template #link="{ value }">
         <div>
           <a
@@ -129,8 +140,7 @@
             label="Process Name"
             type="text"
             validation="required"
-            :value="currentProcess.namaProses"
-            @input="currentProcess.namaProses = $event"
+            v-model="currentProcess.namaProses"
             placeholder="Enter process name"
           />
 
@@ -139,8 +149,7 @@
             label="Process Link"
             type="text"
             validation="required"
-            :value="currentProcess.idPage"
-            @input="currentProcess.idPage = $event"
+            v-model="currentProcess.idPage"
             placeholder="Enter process link"
             help="Enter the full process link path"
           />
@@ -149,12 +158,43 @@
             name="description"
             label="Description"
             type="textarea"
-            :value="currentProcess.description"
-            @input="currentProcess.description = $event"
+            v-model="currentProcess.description"
             placeholder="Enter process description (optional)"
             help="Provide a brief description of this process"
             rows="3"
           />
+
+          <!-- Fixed category select -->
+          <FormKit
+            name="category"
+            label="Category"
+            type="select"
+            v-model="currentProcess.kodKategori"
+            placeholder="Select a category"
+            help="Choose a category to organize this process"
+            :options="categorySelectOptions"
+            @input="handleCategoryChange"
+          />
+
+          <!-- Alternative: Manual category select if FormKit options don't work -->
+          <div class="formkit-outer" v-if="false">
+            <label class="formkit-label">Category</label>
+            <select
+              v-model="currentProcess.kodKategori"
+              @change="handleCategoryChange"
+              class="formkit-input"
+            >
+              <option value="">Select a category</option>
+              <option
+                v-for="category in categories"
+                :key="category.kodKategori"
+                :value="category.kodKategori"
+              >
+                {{ category.namaKategori }}
+              </option>
+              <option value="new">+ Add New Category</option>
+            </select>
+          </div>
         </FormKit>
       </template>
       <template #footer>
@@ -201,6 +241,49 @@
             >Cancel</RsButton
           >
           <RsButton variant="danger" @click="deleteProcess">Delete</RsButton>
+        </div>
+      </template>
+    </RsModal>
+
+    <!-- Add Category Modal -->
+    <RsModal
+      v-model="showCategoryModal"
+      title="Add New Category"
+      size="md"
+      position="center"
+    >
+      <template #body>
+        <FormKit type="form" @submit="submitCategory" :actions="false">
+          <FormKit
+            name="namaKategori"
+            label="Category Name"
+            type="text"
+            validation="required"
+            v-model="newCategory.namaKategori"
+            placeholder="Enter category name"
+          />
+
+          <FormKit
+            name="description"
+            label="Description"
+            type="textarea"
+            v-model="newCategory.description"
+            placeholder="Enter category description (optional)"
+            help="Provide a brief description of this category"
+            rows="3"
+          />
+        </FormKit>
+      </template>
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <RsButton
+            variant="secondary-outline"
+            @click="showCategoryModal = false"
+            >Cancel</RsButton
+          >
+          <RsButton variant="primary" @click="submitCategory"
+            >Create Category</RsButton
+          >
         </div>
       </template>
     </RsModal>
@@ -282,7 +365,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch, nextTick } from "vue";
 import { useToast } from "~/composables/useToast";
 import { useApiFetching } from "~/composables/useApiFetching";
 
@@ -322,15 +405,22 @@ watch(
       showModal.value = false;
       showDeleteModal.value = false;
       showComponentsAffectedModal.value = false;
+      showCategoryModal.value = false;
       isEditing.value = false;
       currentProcess.value = {
         id: null,
         namaProses: "",
         idPage: "",
         description: "",
+        kodKategori: "",
       };
       processToDelete.value = null;
       affectedComponents.value = [];
+      categories.value = [];
+      newCategory.value = {
+        namaKategori: "",
+        description: "",
+      };
     }
   },
   { immediate: false }
@@ -347,15 +437,78 @@ const loading = ref(false);
 const showModal = ref(false);
 const showDeleteModal = ref(false);
 const showComponentsAffectedModal = ref(false);
+const showCategoryModal = ref(false);
 const isEditing = ref(false);
 const currentProcess = ref({
   id: null,
   namaProses: "",
   idPage: "",
   description: "",
+  kodKategori: "",
 });
 const processToDelete = ref(null);
 const affectedComponents = ref([]);
+const categories = ref([]);
+const newCategory = ref({
+  namaKategori: "",
+  description: "",
+});
+
+// Fixed computed property for category options - simplified for FormKit
+const categorySelectOptions = computed(() => {
+  console.log("🔄 Computing category options, categories:", categories.value);
+
+  const options = [
+    { label: "Select a category", value: "" },
+    ...categories.value.map((cat) => ({
+      label: cat.namaKategori,
+      value: cat.kodKategori,
+    })),
+    { label: "+ Add New Category", value: "new" },
+  ];
+
+  console.log("📋 Category options:", options);
+  return options;
+});
+
+// Handle category selection change
+const handleCategoryChange = (value) => {
+  console.log("🔄 Category changed:", value);
+
+  if (value === "new") {
+    // Reset selection and open add category modal
+    currentProcess.value.kodKategori = "";
+    openAddCategoryModal();
+  } else {
+    currentProcess.value.kodKategori = value;
+  }
+};
+
+// Load categories
+const loadCategories = async () => {
+  try {
+    console.log("🔄 Loading categories...");
+    const response = await apiRequest(
+      "/configuration/profiling/category/active",
+      {
+        method: "GET",
+      }
+    );
+    console.log("🔄 Categories response:", response);
+
+    if (response && Array.isArray(response)) {
+      categories.value = response;
+      console.log("✅ Categories loaded:", categories.value);
+    } else {
+      console.warn("⚠️ Categories response is not an array:", response);
+      categories.value = [];
+    }
+  } catch (error) {
+    console.error("❌ Error loading categories:", error);
+    toast.error("Failed to load categories");
+    categories.value = [];
+  }
+};
 
 // Load processes on mount
 const loadProcesses = async () => {
@@ -389,6 +542,7 @@ const loadProcesses = async () => {
           name: process?.namaProses || "",
           link: process?.idPage || "",
           description: process?.description || "",
+          category: process?.namaKategori || "",
           status: process?.status || 0,
           processCode: process?.kodProses || "",
           actions: process?.kodProses || "",
@@ -430,17 +584,20 @@ watch(
       oldPath !== newPath
     ) {
       console.log("🔄 Entering process page - reloading data");
+      loadCategories();
       loadProcesses();
     }
   },
   { immediate: false }
 );
 
-onMounted(() => {
+onMounted(async () => {
   console.log("🚀 Component mounted");
   console.log("📍 Current route:", route.path);
 
-  loadProcesses();
+  // Load categories first, then processes
+  await loadCategories();
+  await loadProcesses();
 
   // Safety timeout to ensure loading stops
   setTimeout(() => {
@@ -459,15 +616,22 @@ onUnmounted(() => {
   showModal.value = false;
   showDeleteModal.value = false;
   showComponentsAffectedModal.value = false;
+  showCategoryModal.value = false;
   isEditing.value = false;
   currentProcess.value = {
     id: null,
     namaProses: "",
     idPage: "",
     description: "",
+    kodKategori: "",
   };
   processToDelete.value = null;
   affectedComponents.value = [];
+  categories.value = [];
+  newCategory.value = {
+    namaKategori: "",
+    description: "",
+  };
 });
 
 // Open add modal
@@ -478,6 +642,7 @@ const openAddModal = () => {
     namaProses: "",
     idPage: "",
     description: "",
+    kodKategori: "",
   };
   showModal.value = true;
 };
@@ -490,6 +655,7 @@ const editProcess = (process) => {
     namaProses: process.name || "",
     idPage: process.link || "",
     description: process.description || "",
+    kodKategori: process.kodKategori || "",
   };
   showModal.value = true;
 };
@@ -514,6 +680,7 @@ const submitProcess = async () => {
             namaProses: currentProcess.value.namaProses,
             idPage: currentProcess.value.idPage,
             description: currentProcess.value.description,
+            kodKategori: currentProcess.value.kodKategori || null,
           },
         }
       );
@@ -527,6 +694,7 @@ const submitProcess = async () => {
           namaProses: currentProcess.value.namaProses,
           idPage: currentProcess.value.idPage,
           description: currentProcess.value.description,
+          kodKategori: currentProcess.value.kodKategori || null,
         },
       });
       toast.success("New process created successfully");
@@ -579,6 +747,59 @@ const toggleProcessStatus = async (process) => {
   }
 };
 
+// Open add category modal
+const openAddCategoryModal = () => {
+  newCategory.value = {
+    namaKategori: "",
+    description: "",
+  };
+  showCategoryModal.value = true;
+};
+
+// Submit category
+const submitCategory = async () => {
+  if (!newCategory.value.namaKategori) {
+    toast.error("Please enter a category name");
+    return;
+  }
+
+  try {
+    await apiRequest("/configuration/profiling/category", {
+      method: "POST",
+      body: {
+        namaKategori: newCategory.value.namaKategori,
+        description: newCategory.value.description,
+      },
+    });
+
+    toast.success("Category created successfully");
+    showCategoryModal.value = false;
+
+    // Reload categories
+    await loadCategories();
+
+    // Set the new category as selected in the process form
+    const newCategoryResponse = await apiRequest(
+      "/configuration/profiling/category/active",
+      {
+        method: "GET",
+      }
+    );
+
+    if (newCategoryResponse && Array.isArray(newCategoryResponse)) {
+      const createdCategory = newCategoryResponse.find(
+        (cat) => cat.namaKategori === newCategory.value.namaKategori
+      );
+      if (createdCategory) {
+        currentProcess.value.kodKategori = createdCategory.kodKategori;
+      }
+    }
+  } catch (error) {
+    console.error("Error creating category:", error);
+    toast.error("Failed to create category");
+  }
+};
+
 // Delete process
 const deleteProcess = async () => {
   if (processToDelete.value) {
@@ -595,9 +816,12 @@ const deleteProcess = async () => {
       }
 
       console.log("🔍 Using process identifier:", processIdentifier);
-      const response = await apiRequest(`/configuration/profiling/process/${processIdentifier}`, {
-        method: "DELETE",
-      });
+      const response = await apiRequest(
+        `/configuration/profiling/process/${processIdentifier}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       console.log("📡 Delete response:", response);
 
@@ -642,5 +866,31 @@ const deleteProcess = async () => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.formkit-outer {
+  margin-bottom: 1rem;
+}
+
+.formkit-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.formkit-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.formkit-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
 }
 </style>

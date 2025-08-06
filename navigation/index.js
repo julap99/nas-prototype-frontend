@@ -116,6 +116,12 @@ export default [
         icon: "ic:sharp-scatter-plot",
         child: [
           {
+            title: "Categories",
+            path: "/devtool/process-flow/categories",
+            icon: "",
+            child: [],
+          },
+          {
             title: "Processes",
             path: "/devtool/process-flow/processes",
             icon: "",
