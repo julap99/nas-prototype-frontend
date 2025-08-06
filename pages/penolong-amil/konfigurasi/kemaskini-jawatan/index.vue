@@ -38,6 +38,7 @@
     >
       <!-- Workflow Header -->
       <div class="workflow-header-minimal">
+        <!-- Existing header content -->
         <div class="header-main">
           <span class="workflow-title">{{ currentProcess.name }}</span>
           <span class="workflow-progress">
@@ -45,7 +46,11 @@
           </span>
         </div>
         <div class="session-info-minimal">
-          Session: <span class="session-uuid">{{ currentSessionId }}</span>
+          <span class="session-icon" aria-hidden="true">
+            <svg width="16" height="16" fill="none" viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="3" fill="#3b82f6" opacity="0.12"/><rect x="2" y="4" width="16" height="12" rx="3" stroke="#3b82f6" stroke-width="1.5"/><rect x="6" y="8" width="8" height="2" rx="1" fill="#3b82f6"/><rect x="6" y="11" width="5" height="1.5" rx="0.75" fill="#3b82f6" opacity="0.5"/></svg>
+          </span>
+          <span class="session-label">Session:</span>
+          <span class="session-uuid" :title="currentSessionId">{{ currentSessionId }}</span>
         </div>
       </div>
 
@@ -432,18 +437,39 @@ onUnmounted(() => {
 }
 
 .session-info-minimal {
-  font-size: 0.85rem;
-  color: #9ca3af;
-  margin-top: 0.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.92rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+.session-icon {
+  display: flex;
+  align-items: center;
+  color: #3b82f6;
+  margin-right: 0.25rem;
+}
+
+.session-label {
+  font-weight: 500;
+  color: #374151;
+  margin-right: 0.25rem;
 }
 
 .session-uuid {
-  font-family: "Courier New", monospace;
-  color: #6b7280;
-  background: #f3f4f6;
-  padding: 0.1rem 0.4rem;
-  border-radius: 3px;
-  font-size: 0.85em;
+  font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+  color: #2563eb;
+  background: #e0e7ff;
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.92em;
+  letter-spacing: 0.01em;
 }
 
 .workflow-success {
