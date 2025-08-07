@@ -14,6 +14,37 @@ export default [
     meta: {},
   },
   {
+    header: "Pengurusan Bantuan",
+    description: "BTN",
+    child: [
+      {
+        title: "Mohon Bantuan",
+        path: "",
+        icon: "",
+        child: [
+          {
+            title: "Bantuan Dengan Siasatan",
+            path: "/pengurusan-bantuan/mohon-bantuan/bantuan-dengan-siasatan",
+            icon: "",
+            child: [],
+          },
+        ],
+      },
+      {
+        title: "Bantuan Bulk Processing",
+        path: "/pengurusan-bantuan/bantuan-bulk-processing",
+        icon: "ic:outline-dashboard",
+        child: [],
+        meta: {},
+      },
+    ],
+    meta: {
+      auth: {
+        role: ["Developer"],
+      },
+    },
+  },
+  {
     header: "Test",
     description: "Test Menu",
     child: [
@@ -128,7 +159,7 @@ export default [
             child: [],
           },
           {
-            title: "Configuration",
+            title: "Components",
             path: "/devtool/process-flow/components",
             icon: "",
             child: [],
