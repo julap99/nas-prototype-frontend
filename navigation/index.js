@@ -45,6 +45,30 @@ export default [
     },
   },
   {
+    header: "Pengurusan Tunai",
+    description: "TNI",
+    child: [
+      {
+        title: "Tambah Tunai",
+        path: "/pengurusan-tunai/tambah-tunai",
+        icon: "ic:outline-dashboard",
+        child: [
+          {
+            title: "Senarai Permohonan",
+            path: "/pengurusan-tunai/tambah-tunai/senarai-permohonan-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+        ],
+      },
+    ],
+    meta: {
+      auth: {
+        role: ["Developer"],
+      },
+    },
+  },
+  {
     header: "Test",
     description: "Test Menu",
     child: [
