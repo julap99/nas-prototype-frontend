@@ -60,12 +60,30 @@ export default [
         icon: "",
         child: [],
       },
-
       {
         title: "Bulk Processing",
         path: "",
         icon: "",
-        child: [],
+        child: [
+          {
+            title: "Cipta Bulk Processing",
+            path: "/pengurusan-bantuan/bulk-processing/cipta-bulk-processing",
+            icon: "",
+            child: [],
+          },
+          {
+            title: "Senarai Bulk Processing (Sokongan)",
+            path: "/pengurusan-bantuan/bulk-processing/senarai-bulk-processing-sokongan",
+            icon: "",
+            child: [],
+          },
+          {
+            title: "Senarai Bulk Processing (Kelulusan)",
+            path: "/pengurusan-bantuan/bulk-processing/senarai-bulk-processing-kelulusan",
+            icon: "",
+            child: [],
+          },
+        ],
         meta: {},
       },
       {
