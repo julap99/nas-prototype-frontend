@@ -13,6 +13,8 @@ export default [
     ],
     meta: {},
   },
+
+  // Profiling
   {
     header: "Profiling",
     description: "Profiling",
@@ -31,36 +33,52 @@ export default [
       },
     ],
   },
+
+  // Pengurusan Bantuan
   {
     header: "Pengurusan Bantuan",
     description: "BTN",
     child: [
       {
         title: "Mohon Bantuan",
-        path: "",
+        path: "/pengurusan-bantuan/mohon-bantuan",
         icon: "",
-        child: [
-          {
-            title: "Bantuan Dengan Siasatan",
-            path: "/pengurusan-bantuan/mohon-bantuan/bantuan-dengan-siasatan",
-            icon: "",
-            child: [],
-          },
-        ],
-      },
-      {
-        title: "Bantuan Bulk Processing",
-        path: "/pengurusan-bantuan/bantuan-bulk-processing",
-        icon: "ic:outline-dashboard",
         child: [],
         meta: {},
       },
+      {
+        title: "Bantuan Dengan Siasatan",
+        path: "/pengurusan-bantuan/bantuan-dengan-siasatan",
+        icon: "",
+        child: [],
+        meta: {},
+      },
+
       {
         title: "Bantuan Dengan Siasatan Teknikal",
         path: "/pengurusan-bantuan/bantuan-dengan-siasatan-teknikal",
         icon: "",
         child: [],
       },
+
+      {
+        title: "Bulk Processing",
+        path: "",
+        icon: "",
+        child: [],
+        meta: {},
+      },
+      {
+        title: "Tuntutan",
+        path: "",
+        icon: "",
+        child: [],
+        meta: {},
+      },
+
+      // KL
+      // Tuntuan
+      //
     ],
     meta: {
       auth: {
@@ -68,6 +86,8 @@ export default [
       },
     },
   },
+
+  // Pengurusan Tunai
   {
     header: "Pengurusan Tunai",
     description: "TNI",
@@ -92,6 +112,8 @@ export default [
       },
     },
   },
+
+  // Test
   {
     header: "Test",
     description: "Test Menu",
@@ -185,6 +207,8 @@ export default [
       },
     },
   },
+
+  // Administration
   {
     header: "Administration",
     description: "Manage your application",
