@@ -126,6 +126,32 @@ export default [
         ],
         meta: {},
       },
+      {
+        title: "Program",
+        path: "",
+        icon: "",
+        child: [
+          {
+            title: "Cipta Program",
+            path: "/pengurusan-bantuan/program/cipta-program",
+            icon: "",
+            child: [],
+          },
+          {
+            title: "Senarai Program",
+            path: "/pengurusan-bantuan/program/senarai-program",
+            icon: "",
+            child: [],
+          },
+          {
+            title: "Senarai Program (Pengesahan)",
+            path: "/pengurusan-bantuan/program/senarai-program-pengesahan",
+            icon: "",
+            child: [],
+          },
+        ],
+        meta: {},
+      },
 
       // KL
       // Tuntuan
