@@ -87,10 +87,43 @@ export default [
         meta: {},
       },
       {
+        title: "Kelulusan Khas",
+        path: "",
+        icon: "",
+        child: [
+          {
+            title: "Senarai Permohonan",
+            path: "/pengurusan-bantuan/kelulusan-khas/senarai-permohonan",
+            icon: "",
+            child: [],
+          },
+        ],
+        meta: {},
+      },
+      {
         title: "Tuntutan",
         path: "",
         icon: "",
-        child: [],
+        child: [
+          {
+            title: "Mohon Tuntutan",
+            path: "/pengurusan-bantuan/tuntutan/mohon-tuntutan",
+            icon: "",
+            child: [],
+          },
+          {
+            title: "Senarai Pengesahan",
+            path: "/pengurusan-bantuan/tuntutan/senarai-pengesahan",
+            icon: "",
+            child: [],
+          },
+          {
+            title: "Senarai Kelulusan",
+            path: "/pengurusan-bantuan/tuntutan/senarai-kelulusan",
+            icon: "",
+            child: [],
+          },
+        ],
         meta: {},
       },
 
