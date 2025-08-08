@@ -14,6 +14,24 @@ export default [
     meta: {},
   },
   {
+    header: "Profiling",
+    description: "Profiling",
+    child: [
+      {
+        title: "Pendaftaran Asnaf Overall",
+        path: "/profiling/pendaftaran-asnaf-overall",
+        icon: "ic:outline-dashboard",
+        child: [],
+      },
+      {
+        title: "Organisasi",
+        path: "/profiling/organisasi",
+        icon: "ic:outline-dashboard",
+        child: [],
+      },
+    ],
+  },
+  {
     header: "Pengurusan Bantuan",
     description: "BTN",
     child: [
@@ -36,6 +54,12 @@ export default [
         icon: "ic:outline-dashboard",
         child: [],
         meta: {},
+      },
+      {
+        title: "Bantuan Dengan Siasatan Teknikal",
+        path: "/pengurusan-bantuan/bantuan-dengan-siasatan-teknikal",
+        icon: "",
+        child: [],
       },
     ],
     meta: {
