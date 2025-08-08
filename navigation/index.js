@@ -138,8 +138,8 @@ export default [
             child: [],
           },
           {
-            title: "Senarai Program",
-            path: "/pengurusan-bantuan/program/senarai-program",
+            title: "Pemilikan Peserta",
+            path: "/pengurusan-bantuan/program/pemilikan-peserta",
             icon: "",
             child: [],
           },
