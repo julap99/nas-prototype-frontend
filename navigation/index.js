@@ -20,7 +20,7 @@ export default [
     description: "Profiling",
     child: [
       {
-        title: "Pendaftaran Asnaf Overall",
+        title: "Pendaftaran Lengkap",
         path: "/profiling/pendaftaran-asnaf-overall",
         icon: "ic:outline-dashboard",
         child: [],
@@ -181,6 +181,25 @@ export default [
             child: [],
           },
         ],
+      },
+    ],
+    meta: {
+      auth: {
+        role: ["Developer"],
+      },
+    },
+  },
+
+  // Pengurusan Aduan
+  {
+    header: "Pengurusan Aduan",
+    description: "Aduan",
+    child: [
+      {
+        title: "Senarai Aduan",
+        path: "/dashboard",
+        icon: "ic:outline-dashboard",
+        child: [],
       },
     ],
     meta: {
