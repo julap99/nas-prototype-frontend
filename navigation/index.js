@@ -31,6 +31,18 @@ export default [
         icon: "ic:outline-dashboard",
         child: [],
       },
+      {
+        title: "Semakan",
+        path: "/profiling/semakan",
+        icon: "ic:outline-dashboard",
+        child: [],
+      },
+      {
+        title: "Pengesahan",
+        path: "/profiling/pengesahan",
+        icon: "ic:outline-dashboard",
+        child: [],
+      },
     ],
   },
 
