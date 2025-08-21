@@ -21,7 +21,7 @@ export default [
     child: [
       {
         title: "Pendaftaran Lengkap",
-        path: "/profiling/pendaftaran-asnaf-overall",
+        path: "/profiling/pendaftaran-lengkap",
         icon: "ic:outline-dashboard",
         child: [],
       },
