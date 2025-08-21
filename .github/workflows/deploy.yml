@@ -1,0 +1,44 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      # 3️⃣ Setup SSH
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+      # 4️⃣ Deploy: pull latest code, install deps, build, reload PM2
+      - name: Deploy to server
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+            cd /home/ubuntu/nas-prototype-frontend &&
+            git pull origin main &&
+            npm ci &&
+            npm run build &&
+            pm2 reload app
+          "
+
+      # 5️⃣ Optional health check
+      - name: Health check
+        run: |
+          curl -f http://${{ secrets.SERVER_HOST }}:3000 || exit 1
