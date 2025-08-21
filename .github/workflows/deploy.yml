@@ -40,7 +40,7 @@ jobs:
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
             cd /home/ubuntu/nas-prototype-frontend &&
             git pull origin main &&
-            npm ci &&
+            npm ci --legacy-peer-deps &&
             npm run build &&
             pm2 reload app
           "
