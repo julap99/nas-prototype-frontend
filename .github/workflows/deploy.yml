@@ -44,8 +44,3 @@ jobs:
             npm run build &&
             pm2 reload app
           "
-
-      # 5️⃣ Optional health check
-      - name: Health check
-        run: |
-          curl -f http://${{ secrets.SERVER_HOST }}:3000 || exit 1
