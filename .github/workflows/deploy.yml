@@ -27,6 +27,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
+
+      - name: Add server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+
       # 4️⃣ Deploy: pull latest code, install deps, build, reload PM2
       - name: Deploy to server
         run: |
