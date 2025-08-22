@@ -208,9 +208,39 @@ export default [
     description: "Aduan",
     child: [
       {
-        title: "Senarai Aduan",
-        path: "/dashboard",
-        icon: "ic:outline-dashboard",
+        title: "Daftar Aduan",
+        path: "/pengurusan-aduan/daftar-aduan",
+        icon: "",
+        child: [],
+      },
+      {
+        title: "Senarai Aduan Saya",
+        path: "/pengurusan-aduan/senarai-aduan-saya",
+        icon: "",
+        child: [],
+      },
+      {
+        title: "Senarai Aduan (Kelas 1)",
+        path: "/pengurusan-aduan/senarai-aduan-kelas-1",
+        icon: "",
+        child: [],
+      },
+      {
+        title: "Senarai Tugasan (SSU/Eksekutif/KJ)",
+        path: "/pengurusan-aduan/senarai-tugasan-ssu",
+        icon: "",
+        child: [],
+      },
+      {
+        title: "Senarai Aduan Terbuka (Kelas 2/3)",
+        path: "/pengurusan-aduan/senarai-aduan-terbuka",
+        icon: "",
+        child: [],
+      },
+      {
+        title: "Senarai Tugasan (PAK)",
+        path: "/pengurusan-aduan/senarai-tugasan-pak",
+        icon: "",
         child: [],
       },
     ],
