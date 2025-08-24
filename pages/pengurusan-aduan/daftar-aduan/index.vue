@@ -36,92 +36,6 @@
         !workflowCompleted && currentProcessIndex < formProcesses.length
       "
     >
-      <!-- Workflow Header -->
-      <div class="workflow-header-minimal">
-        <!-- Existing header content -->
-        <div class="header-main">
-          <span class="workflow-title">{{ currentProcess.name }}</span>
-          <span class="workflow-progress">
-            Step {{ currentProcessIndex + 1 }} of {{ formProcesses.length }}
-          </span>
-        </div>
-        <div class="session-info-minimal">
-          <span class="session-icon" aria-hidden="true">
-            <svg width="16" height="16" fill="none" viewBox="0 0 20 20">
-              <rect
-                x="2"
-                y="4"
-                width="16"
-                height="12"
-                rx="3"
-                fill="#3b82f6"
-                opacity="0.12"
-              />
-              <rect
-                x="2"
-                y="4"
-                width="16"
-                height="12"
-                rx="3"
-                stroke="#3b82f6"
-                stroke-width="1.5"
-              />
-              <rect x="6" y="8" width="8" height="2" rx="1" fill="#3b82f6" />
-              <rect
-                x="6"
-                y="11"
-                width="5"
-                height="1.5"
-                rx="0.75"
-                fill="#3b82f6"
-                opacity="0.5"
-              />
-            </svg>
-          </span>
-          <span class="session-label">Session:</span>
-          <span class="session-uuid" :title="currentSessionId">{{
-            currentSessionId
-          }}</span>
-
-          <span class="session-icon" aria-hidden="true">
-            <svg width="16" height="16" fill="none" viewBox="0 0 20 20">
-              <rect
-                x="2"
-                y="4"
-                width="16"
-                height="12"
-                rx="3"
-                fill="#3b82f6"
-                opacity="0.12"
-              />
-              <rect
-                x="2"
-                y="4"
-                width="16"
-                height="12"
-                rx="3"
-                stroke="#3b82f6"
-                stroke-width="1.5"
-              />
-              <rect x="6" y="8" width="8" height="2" rx="1" fill="#3b82f6" />
-              <rect
-                x="6"
-                y="11"
-                width="5"
-                height="1.5"
-                rx="0.75"
-                fill="#3b82f6"
-                opacity="0.5"
-              />
-            </svg>
-          </span>
-          <span class="session-label">Component:</span>
-          <span class="session-uuid" :title="componentId">{{
-            componentId
-          }}</span>
-        </div>
-      </div>
-
       <!-- Workflow Iframe -->
       <iframe
         ref="workflowIframe"
@@ -130,19 +44,6 @@
         height="600px"
         style="border: none; min-height: 600px"
       ></iframe>
-
-      <div class="mt-3 flex justify-end gap-3">
-        <RsButton
-          @click="previousWorkflow"
-          :disabled="currentProcessIndex === 0"
-          variant="primary"
-        >
-          Previous
-        </RsButton>
-        <RsButton @click="resetWorkflow" variant="primary">
-          Reset All
-        </RsButton>
-      </div>
     </div>
 
     <!-- Show success message when all workflows are completed -->
@@ -475,71 +376,6 @@ onUnmounted(() => {
     margin-bottom: 1.5rem;
     max-width: 400px;
   }
-}
-
-.workflow-header-minimal {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.75rem 0 1.25rem 0;
-  border-bottom: 1px solid #e5e7eb;
-  margin-bottom: 1.25rem;
-  background: none;
-  box-shadow: none;
-}
-
-.header-main {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-
-.workflow-title {
-  font-weight: 500;
-  font-size: 1.1rem;
-  color: #222;
-}
-
-.workflow-progress {
-  font-size: 0.95rem;
-  color: #6b7280;
-}
-
-.session-info-minimal {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.92rem;
-  color: #6b7280;
-  margin-top: 0.5rem;
-}
-
-.session-icon {
-  display: flex;
-  align-items: center;
-  color: #3b82f6;
-  margin-right: 0.25rem;
-}
-
-.session-label {
-  font-weight: 500;
-  color: #374151;
-  margin-right: 0.25rem;
-}
-
-.session-uuid {
-  font-family: "Menlo", "Monaco", "Consolas", monospace;
-  color: #2563eb;
-  background: #e0e7ff;
-  border-radius: 4px;
-  padding: 0.1rem 0.5rem;
-  font-size: 0.92em;
-  letter-spacing: 0.01em;
 }
 
 .workflow-success {
