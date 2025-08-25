@@ -36,11 +36,6 @@
         !workflowCompleted && currentProcessIndex < formProcesses.length
       "
     >
-
-
-
-      </div>
-
       <!-- Workflow Iframe -->
       <iframe
         ref="workflowIframe"
@@ -49,9 +44,6 @@
         height="600px"
         style="border: none; min-height: 600px"
       ></iframe>
-
-
-
     </div>
 
     <!-- Show success message when all workflows are completed -->
@@ -384,30 +376,6 @@ onUnmounted(() => {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .workflow-success {
   display: flex;
   justify-content: center;
@@ -515,4 +483,4 @@ onUnmounted(() => {
     transform: translateY(0);
   }
 }
-</style> 
+</style>
