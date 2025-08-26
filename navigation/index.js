@@ -150,14 +150,26 @@ export default [
             child: [],
           },
           {
-            title: "Pemilikan Peserta",
-            path: "/pengurusan-bantuan/program/pemilikan-peserta",
+            title: "Pemilihan Peserta",
+            path: "/pengurusan-bantuan/program/pemilihan-peserta",
             icon: "",
             child: [],
           },
           {
             title: "Senarai Program (Pengesahan)",
             path: "/pengurusan-bantuan/program/senarai-program-pengesahan",
+            icon: "",
+            child: [],
+          },
+          {
+            title: "Rekod Senarai Kehadiran",
+            path: "/pengurusan-bantuan/program/rekod-senarai-kehadiran",
+            icon: "",
+            child: [],
+          },
+          {
+            title: "Rekod Senarai Tuntutan",
+            path: "/pengurusan-bantuan/program/rekod-senarai-tuntutan",
             icon: "",
             child: [],
           },
