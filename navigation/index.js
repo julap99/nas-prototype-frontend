@@ -194,16 +194,195 @@ export default [
     description: "TNI",
     child: [
       {
-        title: "Tambah Tunai",
-        path: "/pengurusan-tunai/tambah-tunai",
+        title: "Konfigurasi Tabung",
         icon: "ic:outline-dashboard",
         child: [
           {
-            title: "Senarai Permohonan",
-            path: "/pengurusan-tunai/tambah-tunai/senarai-permohonan-tunai",
+            title: "Senarai Tabung Utama",
+            path: "/pengurusan-tunai/konfigurasi-tabung/senarai-tabung-utama",
             icon: "ic:outline-dashboard",
             child: [],
           },
+          {
+            title: "Senarai Permohonan Tabung PIC - KJ",
+            path: "/pengurusan-tunai/konfigurasi-tabung/senarai-permohonan-tabung-pic-kj",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Tabung PIC - PS",
+            path: "/pengurusan-tunai/konfigurasi-tabung/senarai-tabung-pic-ps",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Tabung - Pelulus",
+            path: "/pengurusan-tunai/konfigurasi-tabung/senarai-tabung-pelulus",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+        ],
+      },
+      {
+        title: "Opening Operasi",
+        icon: "ic:outline-dashboard",
+        child: [
+          {
+            title: "Opening Tabung Utama",
+            path: "/pengurusan-tunai/opening-operasi/opening-tabung-utama",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Penerimaan Tunai",
+            path: "/pengurusan-tunai/opening-operasi/senarai-penerimaan-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Opening Tabung PIC",
+            path: "/pengurusan-tunai/opening-operasi/opening-tabung-pic",
+            icon: "ic:outline-dashboard",
+            child: [],
+          }
+        ],
+      },
+      {
+        title: "Opening Operasi",
+        icon: "ic:outline-dashboard",
+        child: [
+          {
+            title: "Opening Tabung Utama",
+            path: "/pengurusan-tunai/opening-operasi/opening-tabung-utama",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Penerimaan Tunai",
+            path: "/pengurusan-tunai/opening-operasi/senarai-penerimaan-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Opening Tabung PIC",
+            path: "/pengurusan-tunai/opening-operasi/opening-tabung-pic",
+            icon: "ic:outline-dashboard",
+            child: [],
+          }
+        ],
+      },
+      {
+        title: "Closing Operasi",
+        icon: "ic:outline-dashboard",
+        child: [
+          {
+            title: "Closing Tabung PIC",
+            path: "/pengurusan-tunai/closing-operasi/closing-tabung-pic",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Sejarah Tabung PIC",
+            path: "/pengurusan-tunai/closing-operasi/sejarah-tabung-pic",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Pengesahan Tunai",
+            path: "/pengurusan-tunai/closing-operasi/senarai-pengesahan-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Closing Tabung Utama",
+            path: "/pengurusan-tunai/closing-operasi/closing-tabung-utama",
+            icon: "ic:outline-dashboard",
+            child: [],
+          }
+        ],
+      },
+      {
+        title: "Tambah Nilai",
+        icon: "ic:outline-dashboard",
+        child: [
+          {
+            title: "Senarai Permohonan (KC/KB/Eksekutif/KOAD)",
+            path: "/pengurusan-tunai/tambah-nilai/senarai-permohonan-kc-kb-eksekutif-koad",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Permohonan (Kewangan)",
+            path: "/pengurusan-tunai/tambah-nilai/senarai-permohonan-kewangan",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Penerimaan Tunai (CC/EPOAD)",
+            path: "/pengurusan-tunai/tambah-nilai/senarai-penerimaan-tunai-cc-epoad",
+            icon: "ic:outline-dashboard",
+            child: [],
+          }
+        ],
+      },
+      {
+        title: "Pengeluaran Tunai",
+        icon: "ic:outline-dashboard",
+        child: [
+          {
+            title: "Permohonan Pengeluaran Tunai",
+            path: "/pengurusan-tunai/pengeluaran-tunai/permohonan-pengeluaran-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Permohonan Pengeluaran Tunai",
+            path: "/pengurusan-tunai/pengeluaran-tunai/senarai-permohonan-pengeluaran-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Permohonan Pemulangan Tunai",
+            path: "/pengurusan-tunai/pengeluaran-tunai/permohonan-pemulangan-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Pemulangan Tunai",
+            path: "/pengurusan-tunai/pengeluaran-tunai/senarai-pemulangan-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          }
+        ],
+      },
+      {
+        title: "Agihan Lain-Lain",
+        icon: "ic:outline-dashboard",
+        child: [
+          {
+            title: "Permohonan Pengambilan Bantuan Tunai",
+            path: "/pengurusan-tunai/agihan-lain-lain/permohonan-pengambilan-bantuan-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Pengambilan Bantuan Tunai",
+            path: "/pengurusan-tunai/agihan-lain-lain/senarai-pengambilan-bantuan-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Carian Asnaf",
+            path: "/pengurusan-tunai/agihan-lain-lain/carian-asnaf",
+            icon: "ic:outline-dashboard",
+            child: [],
+          },
+          {
+            title: "Senarai Bantuan Tunai",
+            path: "/pengurusan-tunai/agihan-lain-lain/senarai-bantuan-tunai",
+            icon: "ic:outline-dashboard",
+            child: [],
+          }
         ],
       },
     ],
