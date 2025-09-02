@@ -35,14 +35,15 @@
       v-else-if="
         !workflowCompleted && currentProcessIndex < formProcesses.length
       "
+      class="workflow-container"
     >
       <!-- Workflow Iframe -->
+
       <iframe
         ref="workflowIframe"
         :src="generateIframeUrl(currentProcess.url)"
-        width="100%"
-        height="600px"
-        style="border: none; min-height: 600px"
+        class="workflow-iframe"
+        scrolling="yes"
       ></iframe>
     </div>
 
@@ -110,6 +111,7 @@ const loading = ref(true);
 const error = ref(null);
 const sessionUuid = ref("");
 const componentId = ref("");
+let urlCheckInterval = null;
 
 // Function to generate UUID and create iframe URL
 const generateIframeUrl = (baseUrl) => {
@@ -302,28 +304,53 @@ onMounted(async () => {
   window.addEventListener("message", handleMessage);
 
   // Check iframe URL periodically as fallback
-  const urlCheckInterval = setInterval(checkIframeURL, 2000);
-
-  // Clean up interval on unmount
-  onUnmounted(() => {
-    clearInterval(urlCheckInterval);
-  });
+  urlCheckInterval = setInterval(checkIframeURL, 2000);
 });
 
 onUnmounted(() => {
   // Remove message listener
   window.removeEventListener("message", handleMessage);
+  if (urlCheckInterval) {
+    clearInterval(urlCheckInterval);
+    urlCheckInterval = null;
+  }
 });
 </script>
 
 <style lang="scss" scoped>
+.workflow-container {
+  min-height: 100vh;
+}
+
+// .workflow-iframe {
+//   width: 100%;
+//   height: 100vh;
+//   border: 0;
+//   display: block;
+//   overflow: hidden;
+// }
+
+:deep(.workflow-iframe) {
+  width: 100%;
+  height: 100vh;
+  border: none;
+  display: block;
+
+  /* Allow scrolling but hide the scrollbar visually */
+  -ms-overflow-style: none; /* For IE & Edge */
+  scrollbar-width: none; /* For Firefox */
+}
+
+:deep(.workflow-iframe::-webkit-scrollbar) {
+  display: none; /* For Chrome, Safari, Edge */
+}
+
 .loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 400px;
-  padding: 2rem;
 
   .loading-spinner {
     width: 40px;

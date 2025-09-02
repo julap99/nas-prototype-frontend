@@ -48,3 +48,19 @@ onMounted(async () => {
     </NuxtLayout>
   </div>
 </template>
+
+<style>
+/* Hide vertical scrollbar on all iframes while preserving scroll behavior */
+iframe {
+  width: 100%;
+  height: 100vh;
+  display: block;
+  border: none;
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+iframe::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+</style>
