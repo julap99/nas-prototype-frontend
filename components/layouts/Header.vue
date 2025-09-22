@@ -61,7 +61,7 @@ const languageNow = computed(() => {
 // Get current theme icon
 const currentThemeIcon = computed(() => {
   const theme = getCurrentTheme();
-  return theme === 'dark' ? 'ic:outline-dark-mode' : 'ic:outline-light-mode';
+  return theme === "dark" ? "ic:outline-dark-mode" : "ic:outline-light-mode";
 });
 
 onMounted(() => {
@@ -69,12 +69,19 @@ onMounted(() => {
   if (window.innerWidth < 768) {
     emit("toggleMenu", true);
   }
-  
+
   // Load site settings on mount and ensure they're properly populated
   const { loadSiteSettings } = useSiteSettings();
   loadSiteSettings().then(() => {
     nextTick(() => {
-      console.log('[Header.vue] Site settings loaded. Name:', siteSettings.value?.siteName, 'ShowInHeader:', siteSettings.value?.showSiteNameInHeader, 'Logo:', siteSettings.value?.siteLogo);
+      console.log(
+        "[Header.vue] Site settings loaded. Name:",
+        siteSettings.value?.siteName,
+        "ShowInHeader:",
+        siteSettings.value?.showSiteNameInHeader,
+        "Logo:",
+        siteSettings.value?.siteLogo
+      );
     });
   });
 });
@@ -82,10 +89,10 @@ onMounted(() => {
 // Add computed to ensure logo reactivity
 const currentLogo = computed(() => {
   const logoUrl = siteSettings.value?.siteLogo;
-  if (logoUrl && logoUrl.trim() !== '') {
+  if (logoUrl && logoUrl.trim() !== "") {
     return logoUrl; // Use logo from settings if available and not empty
   }
-  return '/img/logo/corradAF-logo.svg'; // Ultimate fallback
+  return "/img/logo/corradAF-logo.svg"; // Ultimate fallback
 });
 </script>
 
@@ -99,17 +106,24 @@ const currentLogo = computed(() => {
           </button>
         </span>
         <!-- Site logo and name for vertical layout - only show if explicitly enabled -->
-        <div v-if="siteSettings?.value?.showSiteNameInHeader" class="flex items-center ml-4">
+        <div
+          v-if="siteSettings?.value?.showSiteNameInHeader"
+          class="flex items-center ml-4"
+        >
           <img
             :src="currentLogo"
             :alt="siteSettings?.value?.siteName || 'Site Logo'"
             class="h-8 block"
             @error="$event.target.src = '/img/logo/corradAF-logo.svg'"
           />
-          <span v-if="siteSettings?.value?.siteName" 
-                class="text-lg font-semibold"
-                :class="{ 'ml-3': siteSettings?.value?.siteLogo }"
-                :style="{ fontSize: (siteSettings?.value?.siteNameFontSize || 18) + 'px' }">
+          <span
+            v-if="siteSettings?.value?.siteName"
+            class="text-lg font-semibold"
+            :class="{ 'ml-3': siteSettings?.value?.siteLogo }"
+            :style="{
+              fontSize: (siteSettings?.value?.siteNameFontSize || 18) + 'px',
+            }"
+          >
             {{ siteSettings?.value?.siteName }}
           </span>
         </div>
@@ -123,9 +137,16 @@ const currentLogo = computed(() => {
               class="h-8 block"
               @error="$event.target.src = '/img/logo/corradAF-logo.svg'"
             />
-            <span v-if="siteSettings?.value?.siteName && siteSettings?.value?.showSiteNameInHeader" 
-                  class="text-lg font-semibold"
-                  :style="{ fontSize: (siteSettings?.value?.siteNameFontSize || 18) + 'px' }">
+            <span
+              v-if="
+                siteSettings?.value?.siteName &&
+                siteSettings?.value?.showSiteNameInHeader
+              "
+              class="text-lg font-semibold"
+              :style="{
+                fontSize: (siteSettings?.value?.siteNameFontSize || 18) + 'px',
+              }"
+            >
               {{ siteSettings?.value?.siteName }}
             </span>
           </div>
@@ -203,53 +224,46 @@ const currentLogo = computed(() => {
           <template #popper>
             <ul class="header-dropdown w-full md:w-80 text-[#4B5563]">
               <li class="d-head flex items-center justify-between py-2 px-4">
-                <span class="font-semibold">Notification</span>
+                <span class="font-semibold">Notifikasi</span>
                 <div
                   class="flex items-center text-primary cursor-pointer hover:underline"
                 >
-                  <a class="ml-2">View All</a>
+                  <button
+                    class="ml-2"
+                    @click="
+                      navigateTo(
+                        '/pengurusan-bantuan/program/senarai-notifikasi'
+                      )
+                    "
+                  >
+                    Lihat Semua
+                  </button>
                 </div>
               </li>
               <NuxtScrollbar>
                 <li>
-                  <div class="bg-[rgb(var(--bg-1))] py-2 px-4">Today</div>
-                  <a class="py-2 px-4 block">
-                    <div class="flex items-center">
-                      <Icon
-                        name="ic:outline-circle"
-                        class="text-primary flex-none"
-                      />
-                      <span class="mx-2"
-                        >Terdapat Satu Pembayaran yang berlaku menggunakan bil
-                        Kuih Raya Cik Kiah</span
-                      >
-                      <div class="w-12 h-12 rounded-full ml-auto flex-none">
-                        <img
-                          class="rounded-full"
-                          src="@/assets/img/user/default.svg"
-                        />
-                      </div>
-                    </div>
-                  </a>
-                  <a class="py-2 px-4 block">
-                    <div class="flex items-center">
-                      <Icon
-                        name="ic:outline-circle"
-                        class="text-primary flex-none"
-                      />
-                      <span class="mx-2"
-                        >Terdapat Satu Pembayaran yang berlaku menggunakan bil
-                        Mercun</span
-                      >
-                      <div class="w-12 h-12 rounded-full ml-auto flex-none">
-                        <img
-                          class="rounded-full"
-                          src="@/assets/img/user/default.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </a>
+                  <div class="bg-[rgb(var(--bg-1))] py-2 px-4">Hari Ini</div>
+
+                  <div class="py-2 px-4 hover:bg-gray-200 hover:cursor-pointer">
+                    <a
+                      href="https://bp.corrad.ai/workflow/acaa8fcf-ecdc-46cf-836b-1f1318e7e69e"
+                      target="_blank"
+                    >
+                      Jemputan Program Sumbangan DYMM 2025
+                    </a>
+                  </div>
+
+                  <div class="py-2 px-4 hover:bg-gray-200 hover:cursor-pointer">
+                    <a class="">
+                      Permohonan Tuntutan TN-2025-00023 Telah Diluluskan
+                    </a>
+                  </div>
+
+                  <div
+                    class="py-2 px-4 block hover:bg-gray-200 hover:cursor-pointer"
+                  >
+                    <a> Permohonan Bantuan BTN-2025-00012 Telah Diluluskan </a>
+                  </div>
                 </li>
               </NuxtScrollbar>
             </ul>
