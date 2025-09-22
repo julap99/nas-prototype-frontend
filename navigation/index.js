@@ -150,8 +150,8 @@ export default [
             child: [],
           },
           {
-            title: "Pemilihan Peserta",
-            path: "/pengurusan-bantuan/program/pemilihan-peserta",
+            title: "Senarai Notifikasi",
+            path: "/pengurusan-bantuan/program/senarai-notifikasi",
             icon: "",
             child: [],
           },
