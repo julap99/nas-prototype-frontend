@@ -2977,11 +2977,11 @@ function getDefaultValueForFieldType(type) {
             class="cursor-pointer w-6 h-6 hover:text-gray-600 text-gray-500"
           />
           <div class="flex items-center gap-3">
-            <img
+            <!-- <img
               src="@/assets/img/logo/lzs-logo-main.png"
               alt="LZS Logo"
               class="h-8"
-            />
+            /> -->
             <div class="border-l border-gray-300 pl-3">
               <h1 class="text-xl font-semibold text-gray-900">Process Execution</h1>
               <p class="text-sm text-gray-500">
