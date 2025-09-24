@@ -194,31 +194,49 @@ export default [
     description: "TNI",
     child: [
       {
-        title: "Konfigurasi Tabung",
+        title: "Konfigurasi",
         child: [
           {
-            title: "Senarai Tabung Utama",
-            path: "/pengurusan-tunai/konfigurasi-tabung/senarai-tabung-utama",
+            title: "Tabung",
             icon: "ic:outline-dashboard",
-            child: [],
+            child: [
+              {
+                title: "Senarai Tabung Utama",
+                path: "/pengurusan-tunai/konfigurasi-tabung/senarai-tabung-utama",
+                child: [],
+              },
+              {
+                title: "Senarai Permohonan Tabung PIC - KJ",
+                path: "/pengurusan-tunai/konfigurasi-tabung/senarai-permohonan-tabung-pic-kj",
+                child: [],
+              },
+              {
+                title: "Senarai Tabung PIC - PS",
+                path: "/pengurusan-tunai/konfigurasi-tabung/senarai-tabung-pic-ps",
+                child: [],
+              },
+              {
+                title: "Senarai Tabung - Pelulus",
+                path: "/pengurusan-tunai/konfigurasi-tabung/senarai-tabung-pelulus",
+                child: [],
+              },
+            ],
           },
           {
-            title: "Senarai Permohonan Tabung PIC - KJ",
-            path: "/pengurusan-tunai/konfigurasi-tabung/senarai-permohonan-tabung-pic-kj",
+            title: "Pegawai",
             icon: "ic:outline-dashboard",
-            child: [],
-          },
-          {
-            title: "Senarai Tabung PIC - PS",
-            path: "/pengurusan-tunai/konfigurasi-tabung/senarai-tabung-pic-ps",
-            icon: "ic:outline-dashboard",
-            child: [],
-          },
-          {
-            title: "Senarai Tabung - Pelulus",
-            path: "/pengurusan-tunai/konfigurasi-tabung/senarai-tabung-pelulus",
-            icon: "ic:outline-dashboard",
-            child: [],
+            child: [
+              {
+                title: "Senarai Pegawai Berkuasa",
+                path: "/pengurusan-tunai/konfigurasi-pegawai/senarai-pegawai-berkuasa",
+                child: [],
+              },
+              {
+                title: "Senarai Kelulusan Pegawai Berkuasa",
+                path: "/pengurusan-tunai/konfigurasi-pegawai/senarai-kelulusan-pegawai-berkuasa",
+                child: [],
+              },
+            ],
           },
         ],
       },
@@ -281,6 +299,11 @@ export default [
             child: [],
           },
           {
+            title: "Senarai Surat Arahan Pindahan Tunai",
+            path: "/pengurusan-tunai/tambah-nilai/senarai-surat-arahan-pindahan-tunai",
+            child: [],
+          },
+          {
             title: "Senarai Penerimaan Tunai (CC/EPOAD)",
             path: "/pengurusan-tunai/tambah-nilai/senarai-penerimaan-tunai-cc-epoad",
             child: [],
@@ -300,14 +323,19 @@ export default [
             path: "/pengurusan-tunai/pengeluaran-tunai/senarai-permohonan-pengeluaran-tunai",
             child: [],
           },
+        ],
+      },
+      {
+        title: "Pemulangan Tunai",
+        child: [
           {
             title: "Permohonan Pemulangan Tunai",
-            path: "/pengurusan-tunai/pengeluaran-tunai/permohonan-pemulangan-tunai",
+            path: "/pengurusan-tunai/pemulangan-tunai/permohonan-pemulangan-tunai",
             child: [],
           },
           {
             title: "Senarai Pemulangan Tunai",
-            path: "/pengurusan-tunai/pengeluaran-tunai/senarai-pemulangan-tunai",
+            path: "/pengurusan-tunai/pemulangan-tunai/senarai-pemulangan-tunai",
             child: [],
           },
         ],

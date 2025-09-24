@@ -29,6 +29,13 @@ const OtpClassification = {
   message: "formkit-message-otp",
 };
 
+const switchClassification = {
+  label: "formkit-label-switch",
+  inner: "formkit-inner-switch",
+  input: "formkit-input-switch",
+  message: "formkit-message-switch",
+};
+
 const colorClassification = {
   label: "formkit-label-color",
   input: "formkit-input-color",
@@ -42,6 +49,13 @@ const fileClassification = {
 
 const rangeClassification = {
   input: "formkit-input-range",
+};
+
+const searchSelectClassification = {
+  label: "formkit-label-search-select",
+  inner: "formkit-inner-search-select",
+  input: "formkit-input-search-select",
+  message: "formkit-message-search-select",
 };
 
 // export our definitions using our above
@@ -86,9 +100,17 @@ export default {
   week: textClassification,
   otp: OtpClassification,
   mask: textClassification,
+  switch: switchClassification,
   dropzone: {
     ...textClassification,
     inner: "formkit-inner-dropzone",
     dropzone: "formkit-dropzone",
+  },
+  searchSelect: searchSelectClassification,
+  customFileUpload: {
+    ...textClassification,
+    inner: "formkit-inner-custom-file-upload",
+    input: "formkit-input-custom-file-upload",
+    message: "formkit-message-custom-file-upload",
   },
 };
