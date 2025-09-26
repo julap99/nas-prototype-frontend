@@ -21,13 +21,13 @@ export default [
     child: [
       {
         title: "Pendaftaran Lengkap",
-        path: "/profiling/pendaftaran-lengkap",
+        path: "/profiling/pendaftaran-lengkap?pid=11c8f04a-dea2-44c3-a694-0c228e980e54",
         icon: "ic:outline-dashboard",
         child: [],
       },
       {
         title: "Organisasi",
-        path: "/profiling/organisasi",
+        path: "/profiling/organisasi?pid=ef363d8e-e644-490f-8b41-db48b3d3ea87",
         icon: "ic:outline-dashboard",
         child: [],
       },

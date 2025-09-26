@@ -19,7 +19,13 @@ definePageMeta({
 });
 
 const route = useRoute();
-const processId = computed(() => route.query.pid);
+const processId = computed(() => route.params.id);
+const debug = computed(
+  () => route.query.debug === "true" || route.query.debug === "1"
+);
+const hideComplete = computed(
+  () => route.query.hideComplete !== "false" && route.query.hideComplete !== "0"
+);
 </script>
 
 <style scoped>
