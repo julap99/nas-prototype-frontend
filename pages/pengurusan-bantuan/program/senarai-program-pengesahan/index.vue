@@ -137,7 +137,7 @@ const fetchWorkflows = async () => {
 
     // Get component ID from route params or query
     const route = useRoute();
-    const componentCode = "COMP_020";
+    const componentCode = "COMP_002";
 
     console.log("Fetching workflows from backend...", { componentCode });
 
